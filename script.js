@@ -1,6 +1,6 @@
 // Supabase setup
 const SUPABASE_URL = 'https://fzbhvfegkjwkwtgbftsy.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_rAeK9MgtoUmvB7v4kTEsXQ_e9lc3_vI';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6Ymh2ZmVna2p3a3d0Z2JmdHN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NjcyOTYsImV4cCI6MjA4NzU0MzI5Nn0.o3oyt8-jt4oNEolCDg_nCFYkEzdxHL8VqcrMhfIO31c';
 // Use supabaseClient to avoid collision with the global 'supabase' object from the CDN
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -102,22 +102,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (error) throw error;
 
-                const signupCount = await getTotalSignups();
-
                 submitBtn.innerHTML = '✅ ' + (isEn ? 'Registered' : 'Готово');
                 submitBtn.style.backgroundColor = 'var(--secondary)';
 
                 formMessage.textContent = isEn
-                    ? `Thanks! You've been added. Total signups: ${signupCount}`
-                    : `Благодарим! Вече сте в списъка. Общо записани: ${signupCount}`;
+                    ? `Thanks! You've been added to the waitlist.`
+                    : `Благодарим! Вече сте в списъка на чакащите.`;
                 formMessage.style.color = 'var(--white)';
 
                 eaForm.reset();
             } catch (err) {
                 submitBtn.innerHTML = '❌ ' + (isEn ? 'Error' : 'Грешка');
-                formMessage.textContent = isEn ? 'Something went wrong. Try again.' : 'Нещо се обърка. Опитайте пак.';
+
+                // Detailed check for 401 error (often RLS)
+                if (err.status === 401 || err.code === '42501' || (err.message && err.message.includes('401'))) {
+                    formMessage.textContent = isEn
+                        ? 'Database access denied. Please enable RLS policies.'
+                        : 'Достъпът отказан. Моля, разрешете RLS политиките в Supabase.';
+                } else {
+                    formMessage.textContent = isEn ? 'Something went wrong. Try again.' : 'Нещо се обърка. Опитайте пак.';
+                }
+
                 formMessage.style.color = '#ef5350';
-                console.error('Supabase error:', err);
+                console.error('Supabase detailed error:', JSON.stringify(err, null, 2));
             }
 
             setTimeout(() => {
@@ -125,20 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.style.backgroundColor = '';
                 submitBtn.style.pointerEvents = 'auto';
                 formMessage.textContent = '';
-            }, 4000);
+            }, 5000);
         });
-    }
-
-    async function getTotalSignups() {
-        try {
-            const { count, error } = await supabaseClient
-                .from('early_access_emails')
-                .select('*', { count: 'exact', head: true });
-
-            if (error) return 0;
-            return count || 0;
-        } catch (e) {
-            return 0;
-        }
     }
 });
