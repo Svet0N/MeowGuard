@@ -1,49 +1,8 @@
-// Supabase setup
-const SUPABASE_URL = 'https://fzbhvfegkjwkwtgbftsy.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6Ymh2ZmVna2p3a3d0Z2JmdHN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NjcyOTYsImV4cCI6MjA4NzU0MzI5Nn0.o3oyt8-jt4oNEolCDg_nCFYkEzdxHL8VqcrMhfIO31c';
-// Use supabaseClient to avoid collision with the global 'supabase' object from the CDN
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+// landing.js - Specific logic for the landing page (Demo & Waitlist)
 document.addEventListener('DOMContentLoaded', () => {
-
-    // Mobile Menu Toggle
-    const hamburger = document.getElementById('hamburger-menu');
-    const navLinksWrapper = document.querySelector('.nav-links-wrapper');
-
-    if (hamburger) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinksWrapper.classList.toggle('active');
-            document.body.style.overflow = navLinksWrapper.classList.contains('active') ? 'hidden' : 'auto';
-        });
-
-        // Close menu when a link is clicked
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navLinksWrapper.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            });
-        });
-    }
-
-    // Language Toggle Logic
-    const langToggle = document.getElementById('lang-toggle');
     const body = document.body;
 
-    if (langToggle) {
-        langToggle.addEventListener('click', () => {
-            if (body.classList.contains('lang-mode-en')) {
-                body.classList.remove('lang-mode-en');
-                body.classList.add('lang-mode-bg');
-            } else {
-                body.classList.remove('lang-mode-bg');
-                body.classList.add('lang-mode-en');
-            }
-        });
-    }
-
-    // Smooth Scrolling
+    // 1. Smooth Scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -56,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Symptom Checker Demo
+    // 2. Symptom Checker Demo
     const demoBtns = document.querySelectorAll('.demo-btn');
     const demoResult = document.getElementById('demo-result');
 
@@ -97,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Form submission (Supabase Integrated)
+    // 3. Early Access Form submission
     const eaForm = document.getElementById('ea-form');
     const formMessage = document.getElementById('form-message');
 
@@ -134,18 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 eaForm.reset();
             } catch (err) {
                 submitBtn.innerHTML = '❌ ' + (isEn ? 'Error' : 'Грешка');
-
-                // Detailed check for 401 error (often RLS)
-                if (err.status === 401 || err.code === '42501' || (err.message && err.message.includes('401'))) {
-                    formMessage.textContent = isEn
-                        ? 'Database access denied. Please enable RLS policies.'
-                        : 'Достъпът отказан. Моля, разрешете RLS политиките в Supabase.';
-                } else {
-                    formMessage.textContent = isEn ? 'Something went wrong. Try again.' : 'Нещо се обърка. Опитайте пак.';
-                }
-
+                formMessage.textContent = isEn ? 'Something went wrong. Try again.' : 'Нещо се обърка. Опитайте пак.';
                 formMessage.style.color = '#ef5350';
-                console.error('Supabase detailed error:', JSON.stringify(err, null, 2));
+                console.error('Waitlist error:', err);
             }
 
             setTimeout(() => {

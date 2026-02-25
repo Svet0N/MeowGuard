@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeowGuard | Вход</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐱</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --premium-gradient: linear-gradient(135deg, #f0f9ff 0%, #e0f2f1 100%);
+        }
+
+        body.login-page {
+            background: var(--premium-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 15px 45px rgba(31, 38, 135, 0.1);
+            text-align: center;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 5px 15px rgba(242, 143, 59, 0.1);
+        }
+
+        .login-actions {
+            margin-top: 30px;
+        }
+
+        .forgot-password {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .forgot-password:hover {
+            color: var(--primary);
+        }
+
+        .register-link {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .register-link a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Floating Nav Toggle */
+        .home-link {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="login-page">
+    <a href="index.html" class="home-link">
+        <span>←</span> Начало
+    </a>
+
+    <div class="login-container">
+        <div class="glass-card">
+            <div class="login-header">
+                <h1>Добре дошли отново! 🐾</h1>
+                <p>Влезте в профила си, за да следите здравето на Вашата котка.</p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Електронна поща</label>
+                    <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Парола</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+
+                <div class="login-actions">
+                    <button type="submit" class="btn btn-primary btn-full" id="login-btn">Влез</button>
+                    <a href="#" class="forgot-password">Забравена парола?</a>
+                </div>
+            </form>
+
+            <div class="register-link">
+                Нямате профил? <a href="onboarding.html">Започнете тук</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase SDK & Modules -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script src="ui.js"></script>
+    <script src="login.js"></script>
+</body>
+
+</html>

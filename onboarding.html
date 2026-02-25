@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeowGuard | Добре дошли</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐱</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Onboarding Specific Styles */
+        .onboarding-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2f1 100%);
+            padding: 20px;
+        }
+
+        .onboarding-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: #eee;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 25%;
+            transition: width 0.4s ease;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .onboarding-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #edeff2;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .radio-box {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #edeff2;
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-box.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .radio-box input {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="onboarding-page">
+    <header class="navbar"
+        style="background: transparent; border: none; position: fixed; top: 0; width: 100%; z-index: 100;">
+        <div class="container nav-content nav-flex-row"
+            style="display: flex; justify-content: flex-start; padding: 20px;">
+            <a href="index.html" class="logo"
+                style="text-decoration: none; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+                <span class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                        fill="currentColor">
+                        <path
+                            d="M290.59 192c-20.18 0-106.82 1.98-162.59 85.95V192c0-52.94-43.06-96-96-96-17.67 0-32 14.33-32 32s14.33 32 32 32c17.64 0 32 14.36 32 32v256c0 35.3 28.7 64 64 64h176c8.84 0 16-7.16 16-16v-16c0-17.67-14.33-32-32-32h-32l128-96v144c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V289.86c-10.29 2.67-20.89 4.54-32 4.54-61.81 0-113.52-44.05-125.41-102.4zM448 96h-64l-64-64v134.4c0 53.02 42.98 96 96 96s96-42.98 96-96V32l-64 64zm-72 80c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16zm80 0c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16z" />
+                    </svg></span>
+                <span style="font-weight: 700;">MeowGuard</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="onboarding-card">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <!-- Step 1: Name -->
+        <div class="step active" id="step-1">
+            <div class="onboarding-title">
+                <h2>Как се казва Вашата котка? 🐱</h2>
+                <p>Нека започнем с името.</p>
+            </div>
+            <div class="form-group">
+                <input type="text" id="catName" class="form-control" placeholder="напр. Лео, Куки...">
+            </div>
+            <button class="btn btn-primary btn-full" onclick="nextStep(2)">Продължи</button>
+            <div style="margin-top: 25px; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+                Имате профил? <a href="login.html"
+                    style="color: var(--primary); font-weight: 600; text-decoration: none;">Влезте тук</a>
+            </div>
+        </div>
+
+        <!-- Step 2: Age & Weight -->
+        <div class="step" id="step-2">
+            <div class="onboarding-title">
+                <h2>Още малко подробности ⚖️</h2>
+                <p>Тези данни ни помагат за точните изчисления.</p>
+            </div>
+            <div class="form-group">
+                <label>Възраст (години)</label>
+                <input type="number" id="catAge" class="form-control" placeholder="напр. 3">
+            </div>
+            <div class="form-group">
+                <label>Тегло (кг)</label>
+                <input type="number" step="0.1" id="catWeight" class="form-control" placeholder="напр. 4.5">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline" onclick="prevStep(1)">Назад</button>
+                <button class="btn btn-primary btn-full" onclick="nextStep(3)">Продължи</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Gender & Breed -->
+        <div class="step" id="step-3">
+            <div class="onboarding-title">
+                <h2>Пол и порода 🧬</h2>
+            </div>
+            <div class="form-group">
+                <label>Пол</label>
+                <div class="radio-group" id="gender-selection">
+                    <label class="radio-box" onclick="selectGender('male', this)">
+                        <input type="radio" name="gender" value="male"> Мъжки
+                    </label>
+                    <label class="radio-box" onclick="selectGender('female', this)">
+                        <input type="radio" name="gender" value="female"> Женски
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Порода</label>
+                <input type="text" id="catBreed" class="form-control" placeholder="напр. Британска късокосместа">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline" onclick="prevStep(2)">Назад</button>
+                <button class="btn btn-primary btn-full" onclick="nextStep(4)">Продължи</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Account Creation -->
+        <div class="step" id="step-4">
+            <div class="onboarding-title">
+                <h2>Създаване на профил 🔐</h2>
+                <p>Последна стъпка, за да запазим данните.</p>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="userEmail" class="form-control" placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+                <label>Парола</label>
+                <input type="password" id="userPassword" class="form-control" placeholder="••••••••">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline" onclick="prevStep(3)">Назад</button>
+                <button class="btn btn-primary btn-full" id="finish-btn" onclick="finishOnboarding()">Завърши</button>
+            </div>
+        </div>
+
+        <!-- Supabase SDK -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <!-- Supabase SDK & Modules -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="auth.js"></script>
+        <script src="ui.js"></script>
+        <script src="onboarding.js"></script>
+</body>
+
+</html>
