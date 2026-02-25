@@ -138,6 +138,12 @@
 </head>
 
 <body class="onboarding-page">
+    <!-- Soft Gradient Backgrounds -->
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
     <header class="navbar"
         style="background: transparent; border: none; position: fixed; top: 0; width: 100%; z-index: 100;">
         <div class="container nav-content nav-flex-row"
@@ -154,100 +160,132 @@
         </div>
     </header>
 
-    <div class="onboarding-card">
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
+    <main class="page-transition" id="main-content" style="width: 100%; display: flex; justify-content: center;">
+        <div class="onboarding-card">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
 
-        <!-- Step 1: Name -->
-        <div class="step active" id="step-1">
-            <div class="onboarding-title">
-                <h2>Как се казва Вашата котка? 🐱</h2>
-                <p>Нека започнем с името.</p>
-            </div>
-            <div class="form-group">
-                <input type="text" id="catName" class="form-control" placeholder="напр. Лео, Куки...">
-            </div>
-            <button class="btn btn-primary btn-full" onclick="nextStep(2)">Продължи</button>
-            <div style="margin-top: 25px; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
-                Имате профил? <a href="login.html"
-                    style="color: var(--primary); font-weight: 600; text-decoration: none;">Влезте тук</a>
-            </div>
-        </div>
-
-        <!-- Step 2: Age & Weight -->
-        <div class="step" id="step-2">
-            <div class="onboarding-title">
-                <h2>Още малко подробности ⚖️</h2>
-                <p>Тези данни ни помагат за точните изчисления.</p>
-            </div>
-            <div class="form-group">
-                <label>Възраст (години)</label>
-                <input type="number" id="catAge" class="form-control" placeholder="напр. 3">
-            </div>
-            <div class="form-group">
-                <label>Тегло (кг)</label>
-                <input type="number" step="0.1" id="catWeight" class="form-control" placeholder="напр. 4.5">
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-outline" onclick="prevStep(1)">Назад</button>
-                <button class="btn btn-primary btn-full" onclick="nextStep(3)">Продължи</button>
-            </div>
-        </div>
-
-        <!-- Step 3: Gender & Breed -->
-        <div class="step" id="step-3">
-            <div class="onboarding-title">
-                <h2>Пол и порода 🧬</h2>
-            </div>
-            <div class="form-group">
-                <label>Пол</label>
-                <div class="radio-group" id="gender-selection">
-                    <label class="radio-box" onclick="selectGender('male', this)">
-                        <input type="radio" name="gender" value="male"> Мъжки
-                    </label>
-                    <label class="radio-box" onclick="selectGender('female', this)">
-                        <input type="radio" name="gender" value="female"> Женски
-                    </label>
+            <!-- Step 1: Name -->
+            <div class="step active" id="step-1">
+                <div class="onboarding-title">
+                    <h2>Как се казва Вашата котка? 🐱</h2>
+                    <p>Нека започнем с името.</p>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="catName" class="form-control" placeholder="напр. Лео, Куки...">
+                </div>
+                <button class="btn btn-primary btn-full" onclick="nextStep(2)">Продължи</button>
+                <div style="margin-top: 25px; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+                    Имате профил? <a href="login.html"
+                        style="color: var(--primary); font-weight: 600; text-decoration: none;">Влезте тук</a>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Порода</label>
-                <input type="text" id="catBreed" class="form-control" placeholder="напр. Британска късокосместа">
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-outline" onclick="prevStep(2)">Назад</button>
-                <button class="btn btn-primary btn-full" onclick="nextStep(4)">Продължи</button>
-            </div>
-        </div>
 
-        <!-- Step 4: Account Creation -->
-        <div class="step" id="step-4">
-            <div class="onboarding-title">
-                <h2>Създаване на профил 🔐</h2>
-                <p>Последна стъпка, за да запазим данните.</p>
+            <!-- Step 2: Age & Weight -->
+            <div class="step" id="step-2">
+                <div class="onboarding-title">
+                    <h2>Още малко подробности ⚖️</h2>
+                    <p>Тези данни ни помагат за точните изчисления.</p>
+                </div>
+                <div class="form-group">
+                    <label>Възраст (години)</label>
+                    <input type="number" id="catAge" class="form-control" placeholder="напр. 3">
+                </div>
+                <div class="form-group">
+                    <label>Тегло (кг)</label>
+                    <input type="number" step="0.1" id="catWeight" class="form-control" placeholder="напр. 4.5">
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="prevStep(1)">Назад</button>
+                    <button class="btn btn-primary btn-full" onclick="nextStep(3)">Продължи</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="userEmail" class="form-control" placeholder="your@email.com">
-            </div>
-            <div class="form-group">
-                <label>Парола</label>
-                <input type="password" id="userPassword" class="form-control" placeholder="••••••••">
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-outline" onclick="prevStep(3)">Назад</button>
-                <button class="btn btn-primary btn-full" id="finish-btn" onclick="finishOnboarding()">Завърши</button>
-            </div>
-        </div>
 
-        <!-- Supabase SDK -->
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-        <!-- Supabase SDK & Modules -->
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-        <script src="auth.js"></script>
-        <script src="ui.js"></script>
-        <script src="onboarding.js"></script>
+            <!-- Step 3: Gender & Breed -->
+            <div class="step" id="step-3">
+                <div class="onboarding-title">
+                    <h2>Пол и порода 🧬</h2>
+                </div>
+                <div class="form-group">
+                    <label>Пол</label>
+                    <div class="radio-group" id="gender-selection">
+                        <label class="radio-box" onclick="selectGender('male', this)">
+                            <input type="radio" name="gender" value="male"> Мъжки
+                        </label>
+                        <label class="radio-box" onclick="selectGender('female', this)">
+                            <input type="radio" name="gender" value="female"> Женски
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" style="text-align: center; margin-bottom: 25px;">
+                    <div
+                        style="width: 100px; height: 100px; margin: 0 auto 15px; border-radius: 50%; box-shadow: 0 8px 24px rgba(0,0,0,0.08); overflow: hidden; background: transparent;">
+                        <img id="breed-avatar-preview" src="" alt="Cat Avatar"
+                            style="width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s ease, transform 0.3s ease; transform: scale(0.9);">
+                    </div>
+                    <label style="text-align: left;">Порода</label>
+                    <select id="catBreed" class="form-control"
+                        style="font-size: 16px; border-radius: 12px; background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); cursor: pointer; appearance: none; padding-right: 40px; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%23333%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/><path d=%22M0 0h24v24H0z%22 fill=%22none%22/></svg>'); background-repeat: no-repeat; background-position-x: 95%; background-position-y: center; margin-bottom: 10px;">
+                        <option value="Европейска късокосместа" selected>Европейска късокосместа</option>
+                        <option value="Британска късокосместа">Британска късокосместа</option>
+                        <option value="Персийска">Персийска</option>
+                        <option value="Сиамска">Сиамска</option>
+                        <option value="Мейн Куун">Мейн Куун</option>
+                        <option value="Шотландска клепоуха (Scottish Fold)">Шотландска клепоуха (Scottish Fold)</option>
+                        <option value="Бенгалска">Бенгалска</option>
+                        <option value="Ангорска (Турска ангора)">Ангорска (Турска ангора)</option>
+                        <option value="Руска синя">Руска синя</option>
+                        <option value="Сфинкс">Сфинкс</option>
+                        <option value="Рагдол">Рагдол</option>
+                        <option value="Бирманска">Бирманска</option>
+                        <option value="Абисинска">Абисинска</option>
+                        <option value="Сибирска">Сибирска</option>
+                        <option value="Екзотична късокосместа">Екзотична късокосместа</option>
+                        <option value="Норвежка горска">Норвежка горска</option>
+                        <option value="Тайландска">Тайландска</option>
+                        <option value="Бурманска">Бурманска</option>
+                        <option value="Картезианска (Шартрьо)">Картезианска (Шартрьо)</option>
+                        <option value="Улична превъзходна">Улична превъзходна</option>
+                        <option value="Друга / Смесена">Друга / Смесена</option>
+                    </select>
+                    <input type="text" id="custom-breed-input" class="form-control" placeholder="Въведи породата тук"
+                        style="display: none; opacity: 0; transition: opacity 0.5s ease; font-size: 16px; border-radius: 12px; background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px);">
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="prevStep(2)">Назад</button>
+                    <button class="btn btn-primary btn-full" onclick="nextStep(4)">Продължи</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Account Creation -->
+            <div class="step" id="step-4">
+                <div class="onboarding-title">
+                    <h2>Създаване на профил 🔐</h2>
+                    <p>Последна стъпка, за да запазим данните.</p>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="userEmail" class="form-control" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Парола</label>
+                    <input type="password" id="userPassword" class="form-control" placeholder="••••••••">
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="prevStep(3)">Назад</button>
+                    <button class="btn btn-primary btn-full" id="finish-btn"
+                        onclick="finishOnboarding()">Завърши</button>
+                </div>
+            </div>
+    </main>
+
+    <!-- Supabase SDK & Modules -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script src="ui.js"></script>
+    <script src="onboarding.js"></script>
+    </div>
 </body>
 
 </html>

@@ -15,6 +15,17 @@
 </head>
 
 <body class="lang-mode-en">
+    <!-- Scroll Progress -->
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Soft Gradient Backgrounds -->
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
     <!-- Navbar -->
     <header class="navbar">
         <div class="container nav-content">
@@ -49,271 +60,254 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container hero-content">
-            <div class="hero-text">
-                <div class="badge">
-                    <span class="lang-en">🐱 Built for Cat Owners in Bulgaria</span>
-                    <span class="lang-bg">🐱 Създадено за собственици на котки в България</span>
-                </div>
+    <main class="page-transition" id="main-content">
 
-                <h1 class="lang-en">Know When Your Cat Needs a Vet. Instantly.</h1>
-                <h1 class="lang-bg">Разбери кога котката ти има нужда от лекар. Веднага.</h1>
-
-                <p class="hero-p lang-en">Your cat can’t tell you what hurts. MeowGuard analyzes symptoms and helps you
-                    decide when it’s serious.</p>
-                <p class="hero-p lang-bg">Твоята котка не може да ти каже какво я боли. MeowGuard анализира симптомите и
-                    ти помага да решиш кога е сериозно.</p>
-
-                <div class="hero-actions">
-                    <a href="onboarding.html" class="btn btn-primary lang-en">Get Started</a>
-                    <a href="onboarding.html" class="btn btn-primary lang-bg">Започни сега</a>
-                    <a href="#early-access" class="btn btn-outline lang-en">Learn More</a>
-                    <a href="#early-access" class="btn btn-outline lang-bg">Научи повече</a>
-                </div>
-
-                <p class="micro-copy lang-en">Free during beta. Limited early spots.</p>
-                <p class="micro-copy lang-bg">Безплатно по време на бета. Ограничени места.</p>
-
-                <p class="trust-line lang-en">Built by cat owners. Designed with veterinary logic.</p>
-                <p class="trust-line lang-bg">Създадено от собственици на котки. Проектирано с ветеринарна логика.</p>
-            </div>
-
-            <div class="hero-image">
-                <div class="mockup-card">
-                    <div class="mockup-header">
-                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=cat&backgroundColor=F8F9FA"
-                            alt="Cat Avatar" class="cat-avatar">
-                        <div>
-                            <h3 class="lang-en">Cookie's Health</h3>
-                            <h3 class="lang-bg">Здравето на Куки</h3>
-                            <span class="lang-en">All systems purrfect</span>
-                            <span class="lang-bg">Всички системи са перрфеткни</span>
-                        </div>
-                        <span class="check-icon">✅</span>
+        <!-- Hero Section -->
+        <section class="hero fade-in-up visible" data-animate>
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <div class="badge">
+                        <span class="lang-en">🐱 Built for Cat Owners in Bulgaria</span>
+                        <span class="lang-bg">🐱 Създадено за собственици на котки в България</span>
                     </div>
-                    <div class="mockup-body">
-                        <div class="status-item">
-                            <span class="icon syringe">💉</span>
-                            <div>
-                                <h4 class="lang-en">Annual Vaccine</h4>
-                                <h4 class="lang-bg">Годишна ваксина</h4>
-                                <p class="lang-en">Due in 14 days</p>
-                                <p class="lang-bg">След 14 дни</p>
+
+                    <h1 class="lang-en hero-gradient-text">Know When Your Cat Needs a Vet. Instantly.</h1>
+                    <h1 class="lang-bg hero-gradient-text">Разбери кога котката ти има нужда от лекар. Веднага.</h1>
+
+                    <p class="hero-p lang-en">Your cat can’t tell you what hurts. MeowGuard analyzes symptoms and helps
+                        you
+                        decide when it’s serious.</p>
+                    <p class="hero-p lang-bg">Твоята котка не може да ти каже какво я боли. MeowGuard анализира
+                        симптомите и
+                        ти помага да решиш кога е сериозно.</p>
+
+                    <div class="hero-actions">
+                        <a href="onboarding.html" class="btn btn-primary lang-en">Get Started</a>
+                        <a href="onboarding.html" class="btn btn-primary lang-bg">Започни сега</a>
+                        <a href="#early-access" class="btn btn-outline lang-en">Learn More</a>
+                        <a href="#early-access" class="btn btn-outline lang-bg">Научи повече</a>
+                    </div>
+
+                    <p class="micro-copy lang-en">Free during beta. Limited early spots.</p>
+                    <p class="micro-copy lang-bg">Безплатно по време на бета. Ограничени места.</p>
+
+                    <p class="trust-line lang-en">Built by cat owners. Designed with veterinary logic.</p>
+                    <p class="trust-line lang-bg">Създадено от собственици на котки. Проектирано с ветеринарна логика.
+                    </p>
+                </div>
+
+                <div class="hero-image">
+                    <img src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='256' fill='%23fff3e0'/%3E%3Cg transform='translate(0, 30)'%3E%3Cpath fill='%23f28f3b' d='M256,360 C150,360 100,260 100,260 L60,80 L180,160 C210,145 302,145 332,160 L452,80 L412,260 C412,260 362,360 256,360 Z'/%3E%3Ccircle cx='190' cy='240' r='25' fill='%23616161'/%3E%3Ccircle cx='322' cy='240' r='25' fill='%23616161'/%3E%3Cpath fill='%23ff6b6b' d='M380,320 C380,300 350,300 350,320 C350,340 380,370 380,370 C380,370 410,340 410,320 C410,300 380,300 380,320 Z'/%3E%3C/g%3E%3C/svg%3E"
+                        alt="Cat Avatar" class="hero-cat-svg">
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section class="problem fade-in-up" data-animate>
+            <div class="container hero-container-narrow">
+                <div class="lang-en">
+                    <h2 class="section-title">Cat health problems are <span class="highlight">easy to miss.</span></h2>
+                    <p class="section-subtitle">Cats are masters at hiding pain and illness. By the time they show
+                        obvious
+                        symptoms, the issue might already be critical. MeowGuard helps you catch early signs before they
+                        become emergencies.</p>
+                </div>
+                <div class="lang-bg">
+                    <h2 class="section-title">Здравните проблеми при котките се <span class="highlight">забелязват
+                            трудно.</span></h2>
+                    <p class="section-subtitle">Котките са майстори в криенето на болка. Когато покажат явни признаци,
+                        проблемът може вече да е критичен. MeowGuard ви помага да уловите ранните сигнали навреме.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features fade-in-up" data-animate>
+            <div class="container">
+                <h2 class="section-title text-center lang-en">Why MeowGuard?</h2>
+                <h2 class="section-title text-center lang-bg">Защо MeowGuard?</h2>
+                <div class="bento-grid">
+                    <!-- Feature 1 -->
+                    <div class="bento-card bento-card-large demo-card" data-tilt>
+                        <div class="bento-icon-wrapper"><span>🩺</span></div>
+                        <div class="lang-en">
+                            <h3>Smart Symptom Checker</h3>
+                            <p>AI-based triage to evaluate your cat's symptoms and know instantly if it's an emergency.
+                            </p>
+                        </div>
+                        <div class="lang-bg">
+                            <h3>AI Проверка на симптоми</h3>
+                            <p>Интелигентен триаж за оценка на симптомите – разберете веднага дали ситуацията е спешна.
+                            </p>
+                        </div>
+                        <div class="interactive-demo">
+                            <div class="demo-buttons">
+                                <button class="demo-btn" data-severity="low">
+                                    <span class="lang-en">Sneezing</span><span class="lang-bg">Кихане</span>
+                                </button>
+                                <button class="demo-btn" data-severity="medium">
+                                    <span class="lang-en">Lethargy</span><span class="lang-bg">Летаргия</span>
+                                </button>
+                                <button class="demo-btn" data-severity="high">
+                                    <span class="lang-en">Breathing heavily</span><span class="lang-bg">Задух</span>
+                                </button>
+                            </div>
+                            <div class="demo-result" id="demo-result">
+                                <p class="lang-en">Select a symptom to check.</p>
+                                <p class="lang-bg">Изберете симптом.</p>
                             </div>
                         </div>
-                        <div class="status-item">
-                            <span class="icon weight">⚖️</span>
-                            <div>
-                                <h4 class="lang-en">Weight Log</h4>
-                                <h4 class="lang-bg">Тегло</h4>
-                                <p class="lang-en">4.2 kg (Healthy)</p>
-                                <p class="lang-bg">4.2 кг (Здравословно)</p>
-                            </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bento-card bento-card-small" data-tilt>
+                        <div class="bento-icon-wrapper"><span>📅</span></div>
+                        <div class="lang-en">
+                            <h3>Health & Vaccine Reminders</h3>
+                            <p>Never forget another revaccination, deworming, or scheduled vet checkup with our smart
+                                alerts.</p>
+                        </div>
+                        <div class="lang-bg">
+                            <h3>Здраве и ваксини</h3>
+                            <p>Никога не забравяйте ваксинация, обезпаразитяване или преглед с нашите интелигентни
+                                известия.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bento-card bento-card-wide" data-tilt>
+                        <div class="bento-icon-wrapper"><span>📋</span></div>
+                        <div class="lang-en">
+                            <h3>Cat Health Profile</h3>
+                            <p>Keep medical records, weight history, and past treatments organized in one beautiful
+                                digital
+                                passport.</p>
+                        </div>
+                        <div class="lang-bg">
+                            <h3>Здравен профил</h3>
+                            <p>Важна медицинска информация, история на теглото и лечения, организирани в цифров паспорт.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Problem Section -->
-    <section class="problem">
-        <div class="container hero-container-narrow">
-            <div class="lang-en">
-                <h2 class="section-title">Cat health problems are <span class="highlight">easy to miss.</span></h2>
-                <p class="section-subtitle">Cats are masters at hiding pain and illness. By the time they show obvious
-                    symptoms, the issue might already be critical. MeowGuard helps you catch early signs before they
-                    become emergencies.</p>
-            </div>
-            <div class="lang-bg">
-                <h2 class="section-title">Здравните проблеми при котките се <span class="highlight">забелязват
-                        трудно.</span></h2>
-                <p class="section-subtitle">Котките са майстори в криенето на болка. Когато покажат явни признаци,
-                    проблемът може вече да е критичен. MeowGuard ви помага да уловите ранните сигнали навреме.</p>
-            </div>
-        </div>
-    </section>
+        <!-- How it works -->
+        <section id="how-it-works" class="how-it-works fade-in-up" data-animate>
+            <div class="container">
+                <h2 class="section-title text-center lang-en">How it works</h2>
+                <h2 class="section-title text-center lang-bg">Как работи</h2>
 
-    <!-- Features Section -->
-    <section id="features" class="features bg-light">
-        <div class="container">
-            <div class="features-grid">
-                <!-- Feature 1 -->
-                <div class="feature-card demo-card">
-                    <div class="icon-wrapper"><span>🩺</span></div>
-                    <div class="lang-en">
-                        <h3>Smart Symptom Checker</h3>
-                        <p>AI-based triage to evaluate your cat's symptoms and know instantly if it's an emergency.</p>
-                    </div>
-                    <div class="lang-bg">
-                        <h3>AI Проверка на симптоми</h3>
-                        <p>Интелигентен триаж за оценка на симптомите – разберете веднага дали ситуацията е спешна.</p>
-                    </div>
-                    <div class="interactive-demo">
-                        <div class="demo-buttons">
-                            <button class="demo-btn" data-severity="low">
-                                <span class="lang-en">Sneezing</span><span class="lang-bg">Кихане</span>
-                            </button>
-                            <button class="demo-btn" data-severity="medium">
-                                <span class="lang-en">Lethargy</span><span class="lang-bg">Летаргия</span>
-                            </button>
-                            <button class="demo-btn" data-severity="high">
-                                <span class="lang-en">Breathing heavily</span><span class="lang-bg">Задух</span>
-                            </button>
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="lang-en">
+                            <h3>Create your cat profile</h3>
+                            <p>Add basic info like age, breed, and weight to get personalized insights.</p>
                         </div>
-                        <div class="demo-result" id="demo-result">
-                            <p class="lang-en">Select a symptom to check.</p>
-                            <p class="lang-bg">Изберете симптом.</p>
+                        <div class="lang-bg">
+                            <h3>Профил на котката</h3>
+                            <p>Добавете име, възраст и тегло за персонализирани съвети и проследяване.</p>
+                        </div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="lang-en">
+                            <h3>Describe symptoms</h3>
+                            <p>Notice something off? Check our AI triage to assess the situation.</p>
+                        </div>
+                        <div class="lang-bg">
+                            <h3>Опишете симптомите</h3>
+                            <p>Забелязвате нещо необичайно? Направете бърз тест с нашия AI триаж.</p>
+                        </div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="lang-en">
+                            <h3>Get guidance instantly</h3>
+                            <p>Receive immediate advice on whether to observe at home or rush to the vet.</p>
+                        </div>
+                        <div class="lang-bg">
+                            <h3>Насоки веднага</h3>
+                            <p>Получете съвет дали да наблюдавате у дома или да бързате към лекар.</p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Feature 2 -->
-                <div class="feature-card">
-                    <div class="icon-wrapper"><span>📅</span></div>
-                    <div class="lang-en">
-                        <h3>Health & Vaccine Reminders</h3>
-                        <p>Never forget another revaccination, deworming, or scheduled vet checkup with our smart
-                            alerts.</p>
+        <!-- Coming Soon Section -->
+        <section class="coming-soon bg-light fade-in-up" data-animate>
+            <div class="container">
+                <h2 class="section-title text-center lang-en">Coming Soon</h2>
+                <h2 class="section-title text-center lang-bg">Очаквайте скоро</h2>
+                <div class="coming-soon-grid">
+                    <div class="feature-card cs-card">
+                        <span class="cs-label lang-en">Planned Feature</span>
+                        <span class="cs-label lang-bg">Планирана функция</span>
+                        <span class="cs-icon">🚑</span>
+                        <span class="lang-en">Emergency Clinic Finder</span>
+                        <span class="lang-bg">Спешни клиники наблизо</span>
                     </div>
-                    <div class="lang-bg">
-                        <h3>Здраве и ваксини</h3>
-                        <p>Никога не забравяйте ваксинация, обезпаразитяване или преглед с нашите интелигентни известия.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="feature-card">
-                    <div class="icon-wrapper"><span>📋</span></div>
-                    <div class="lang-en">
-                        <h3>Cat Health Profile</h3>
-                        <p>Keep medical records, weight history, and past treatments organized in one beautiful digital
-                            passport.</p>
-                    </div>
-                    <div class="lang-bg">
-                        <h3>Здравен профил</h3>
-                        <p>Важна медицинска информация, история на теглото и лечения, организирани в цифров паспорт.</p>
+                    <div class="feature-card cs-card">
+                        <span class="cs-label lang-en">Planned Feature</span>
+                        <span class="cs-label lang-bg">Планирана функция</span>
+                        <span class="cs-icon">🧑‍⚕️</span>
+                        <span class="lang-en">AI Vet Chat</span>
+                        <span class="lang-bg">AI чат с ветеринар</span>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- How it works -->
-    <section id="how-it-works" class="how-it-works">
-        <div class="container">
-            <h2 class="section-title text-center lang-en">How it works</h2>
-            <h2 class="section-title text-center lang-bg">Как работи</h2>
+        <!-- Early Access Section -->
+        <section id="early-access" class="early-access fade-in-up" data-animate>
+            <div class="container ea-container">
+                <div class="ea-content">
+                    <h2 class="lang-en">Be the first to try.</h2>
+                    <h2 class="lang-bg">Бъди сред първите.</h2>
 
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="lang-en">
-                        <h3>Create your cat profile</h3>
-                        <p>Add basic info like age, breed, and weight to get personalized insights.</p>
-                    </div>
-                    <div class="lang-bg">
-                        <h3>Профил на котката</h3>
-                        <p>Добавете име, възраст и тегло за персонализирани съвети и проследяване.</p>
-                    </div>
-                </div>
-                <div class="step-line"></div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="lang-en">
-                        <h3>Describe symptoms</h3>
-                        <p>Notice something off? Check our AI triage to assess the situation.</p>
-                    </div>
-                    <div class="lang-bg">
-                        <h3>Опишете симптомите</h3>
-                        <p>Забелязвате нещо необичайно? Направете бърз тест с нашия AI триаж.</p>
-                    </div>
-                </div>
-                <div class="step-line"></div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="lang-en">
-                        <h3>Get guidance instantly</h3>
-                        <p>Receive immediate advice on whether to observe at home or rush to the vet.</p>
-                    </div>
-                    <div class="lang-bg">
-                        <h3>Насоки веднага</h3>
-                        <p>Получете съвет дали да наблюдавате у дома или да бързате към лекар.</p>
-                    </div>
+                    <p class="lang-en">We are launching soon. Secure your spot in the beta program today.</p>
+                    <p class="lang-bg">Стартираме скоро. Осигури си място в бета програмата още днес.</p>
+
+                    <form id="ea-form" class="ea-form" method="POST">
+                        <input type="email" name="email" placeholder="Email" required aria-label="Email address">
+                        <button type="submit" class="btn btn-primary submit-btn">
+                            <span class="lang-en">Get Early Access</span>
+                            <span class="lang-bg">Ранен достъп</span>
+                        </button>
+                    </form>
+                    <p class="form-message" id="form-message"></p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Coming Soon Section -->
-    <section class="coming-soon bg-light">
-        <div class="container">
-            <h2 class="section-title text-center lang-en">Coming Soon</h2>
-            <h2 class="section-title text-center lang-bg">Очаквайте скоро</h2>
-            <div class="coming-soon-grid">
-                <div class="feature-card cs-card">
-                    <span class="cs-label lang-en">Planned Feature</span>
-                    <span class="cs-label lang-bg">Планирана функция</span>
-                    <span class="cs-icon">🚑</span>
-                    <span class="lang-en">Emergency Clinic Finder</span>
-                    <span class="lang-bg">Спешни клиники наблизо</span>
+        <!-- Footer -->
+        <footer>
+            <div class="container footer-content">
+                <div class="logo">
+                    <span class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                            fill="currentColor">
+                            <path
+                                d="M290.59 192c-20.18 0-106.82 1.98-162.59 85.95V192c0-52.94-43.06-96-96-96-17.67 0-32 14.33-32 32s14.33 32 32 32c17.64 0 32 14.36 32 32v256c0 35.3 28.7 64 64 64h176c8.84 0 16-7.16 16-16v-16c0-17.67-14.33-32-32-32h-32l128-96v144c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V289.86c-10.29 2.67-20.89 4.54-32 4.54-61.81 0-113.52-44.05-125.41-102.4zM448 96h-64l-64-64v134.4c0 53.02 42.98 96 96 96s96-42.98 96-96V32l-64 64zm-72 80c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16zm80 0c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16z" />
+                        </svg></span>
+                    <span>MeowGuard</span>
                 </div>
-                <div class="feature-card cs-card">
-                    <span class="cs-label lang-en">Planned Feature</span>
-                    <span class="cs-label lang-bg">Планирана функция</span>
-                    <span class="cs-icon">🧑‍⚕️</span>
-                    <span class="lang-en">AI Vet Chat</span>
-                    <span class="lang-bg">AI чат с ветеринар</span>
+                <div class="footer-links">
+                    <a href="#"><span class="lang-en">Privacy</span><span class="lang-bg">Поверителност</span></a>
+                    <a href="#"><span class="lang-en">Terms</span><span class="lang-bg">Условия</span></a>
+                    <a href="mailto:hello@meowguard.com"><span class="lang-en">Contact</span><span
+                            class="lang-bg">Контакт</span></a>
                 </div>
+                <p>&copy; 2026 MeowGuard.</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Early Access Section -->
-    <section id="early-access" class="early-access">
-        <div class="container ea-container">
-            <div class="ea-content">
-                <h2 class="lang-en">Be the first to try.</h2>
-                <h2 class="lang-bg">Бъди сред първите.</h2>
-
-                <p class="lang-en">We are launching soon. Secure your spot in the beta program today.</p>
-                <p class="lang-bg">Стартираме скоро. Осигури си място в бета програмата още днес.</p>
-
-                <form id="ea-form" class="ea-form" method="POST">
-                    <input type="email" name="email" placeholder="Email" required aria-label="Email address">
-                    <button type="submit" class="btn btn-primary submit-btn">
-                        <span class="lang-en">Get Early Access</span>
-                        <span class="lang-bg">Ранен достъп</span>
-                    </button>
-                </form>
-                <p class="form-message" id="form-message"></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container footer-content">
-            <div class="logo">
-                <span class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                        fill="currentColor">
-                        <path
-                            d="M290.59 192c-20.18 0-106.82 1.98-162.59 85.95V192c0-52.94-43.06-96-96-96-17.67 0-32 14.33-32 32s14.33 32 32 32c17.64 0 32 14.36 32 32v256c0 35.3 28.7 64 64 64h176c8.84 0 16-7.16 16-16v-16c0-17.67-14.33-32-32-32h-32l128-96v144c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V289.86c-10.29 2.67-20.89 4.54-32 4.54-61.81 0-113.52-44.05-125.41-102.4zM448 96h-64l-64-64v134.4c0 53.02 42.98 96 96 96s96-42.98 96-96V32l-64 64zm-72 80c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16zm80 0c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16z" />
-                    </svg></span>
-                <span>MeowGuard</span>
-            </div>
-            <div class="footer-links">
-                <a href="#"><span class="lang-en">Privacy</span><span class="lang-bg">Поверителност</span></a>
-                <a href="#"><span class="lang-en">Terms</span><span class="lang-bg">Условия</span></a>
-                <a href="mailto:hello@meowguard.com"><span class="lang-en">Contact</span><span
-                        class="lang-bg">Контакт</span></a>
-            </div>
-            <p>&copy; 2026 MeowGuard.</p>
-        </div>
-    </footer>
+        </footer>
+    </main>
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

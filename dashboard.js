@@ -51,12 +51,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Display selected cat data function
     const activateCatProfile = (cat) => {
-        // Save to session storage to persist across reloads
-        sessionStorage.setItem('selected_cat_id', cat.id);
+        // Save to local storage to persist across reloads
+        localStorage.setItem('active_cat_id', cat.id);
 
         // Populate Main Dashboard
         const name = cat.name || 'Твоето коте';
-        document.getElementById('main-cat-avatar').src = `https://api.dicebear.com/7.x/bottts/svg?seed=${name}&backgroundColor=F8F9FA`;
+        document.getElementById('main-cat-avatar').src = cat.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${name}&backgroundColor=F8F9FA`;
         document.getElementById('cat-name-display').innerText = name;
         document.getElementById('sidebar-name').innerText = name;
         document.getElementById('cat-greeting').innerText = `Как е ${name} днес?`;
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 catItem.className = 'sidebar-cat-item';
                 catItem.dataset.id = cat.id;
                 catItem.innerHTML = `
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${cat.name}&backgroundColor=F8F9FA" class="sidebar-cat-avatar">
+                    <img src="${cat.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${cat.name}&backgroundColor=F8F9FA`}" class="sidebar-cat-avatar">
                     <span class="sidebar-cat-name">${cat.name}</span>
                 `;
                 catItem.addEventListener('click', () => {
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             // 4. Handle Profile Selection Logic (Netflix Style)
-            const savedCatId = sessionStorage.getItem('selected_cat_id');
+            const savedCatId = localStorage.getItem('active_cat_id');
             const hasSeenPicker = sessionStorage.getItem('has_seen_picker');
 
             if (cats.length > 1 && !savedCatId && !hasSeenPicker) {
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     card.className = 'profile-card';
                     card.innerHTML = `
                         <div class="profile-avatar-wrapper">
-                            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${cat.name}&backgroundColor=F8F9FA" class="profile-avatar">
+                            <img src="${cat.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${cat.name}&backgroundColor=F8F9FA`}" class="profile-avatar">
                         </div>
                         <span class="profile-name">${cat.name}</span>
                     `;
@@ -176,5 +176,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Global LogOut function (called by button)
 async function handleLogout() {
     sessionStorage.clear();
+    localStorage.removeItem('active_cat_id');
     await signOut();
 }

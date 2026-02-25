@@ -15,6 +15,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 1.5 Page Transition No-Jump Logic
+    document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            // Check if it's an internal page link (not an anchor # link)
+            if (href && href.endsWith('.html')) {
+                e.preventDefault();
+                const main = document.getElementById('main-content');
+                if (main) {
+                    main.classList.remove('page-transition');
+                    main.classList.add('page-transition', 'fade-out');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 400); // Wait for the fade-out animation
+                } else {
+                    window.location.href = href;
+                }
+            }
+        });
+    });
+
+    // 1.6 Scroll Progress Bar
+    const progressBar = document.getElementById('scroll-progress-bar');
+    if (progressBar) {
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = Math.min((winScroll / height) * 100, 100);
+            progressBar.style.width = scrolled + "%";
+        });
+    }
+
+    // 1.7 Intersection Observer for Fade-In-Up Animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                // Optional: Stop observing once visible if you want it to happen only once
+                // observer.unobserve(entry.target); 
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('[data-animate]').forEach((el) => {
+        // Elements that start visible (like hero section on load) shouldn't be added again,
+        // but it's safe since they already have .visible. 
+        observer.observe(el);
+    });
+
+    // 1.8 Bento 3D Tilt Effect
+    document.querySelectorAll('.bento-card[data-tilt]').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            // Calculate rotation degrees (max 10deg)
+            const rotateX = ((y - centerY) / centerY) * -10;
+            const rotateY = ((x - centerX) / centerX) * 10;
+            // Apply scale and rotation using the Bunny bezier
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            card.style.transition = 'none'; // Disable transition during JS movement to prevent lag
+        });
+
+        card.addEventListener('mouseleave', () => {
+            // Restore smooth transition to snap back
+            card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease';
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+    });
+
     // 2. Symptom Checker Demo
     const demoBtns = document.querySelectorAll('.demo-btn');
     const demoResult = document.getElementById('demo-result');
