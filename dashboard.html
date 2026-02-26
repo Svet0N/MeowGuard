@@ -478,7 +478,7 @@
 
         <!-- Action Row -->
         <div class="action-container">
-            <a href="#" class="glass-card action-item">
+            <a href="#" class="glass-card action-item" id="symptom-checker-btn">
                 <div class="icon-circle">🩺</div>
                 <h3>Провери симптом</h3>
                 <p>AI анализ при съмнение за здравословен проблем.</p>
@@ -495,6 +495,20 @@
             </a>
         </div>
 
+        <!-- Reminders Section -->
+        <div class="glass-card reminders-card" id="reminders-section" style="margin-top: 25px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-dark);">📅 Предстоящи напомняния</h3>
+                <span class="reminders-count" id="reminders-count"
+                    style="background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">0</span>
+            </div>
+            <div id="reminders-list" class="reminders-list">
+                <p class="reminders-empty" id="reminders-empty"
+                    style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 15px 0;">Няма
+                    записани напомняния. Споделете медицинско събитие в чата! 🐾</p>
+            </div>
+        </div>
+
         <!-- Daily Tip -->
         <div class="glass-card daily-tip">
             <div style="font-size: 1.8rem;">💡</div>
@@ -503,6 +517,33 @@
                 <p>Осигурете прясна течаща вода на Вашата котка – това помага за предотвратяване на бъбречни проблеми.
                 </p>
             </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Overlay -->
+    <div id="ai-chat-overlay" class="ai-chat-overlay-hidden">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="ai-avatar">💡</div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.1rem; color: var(--primary);">MeowGuard AI</h3>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Винаги тук за Вашата котка</span>
+                    </div>
+                </div>
+                <button id="close-chat" class="close-chat-btn">&times;</button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <!-- Messages populated by JS -->
+            </div>
+            <form id="chat-form" class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Опишете симптома тук..." autocomplete="off">
+                <button type="submit" id="send-btn" class="send-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                    </svg>
+                </button>
+            </form>
         </div>
     </div>
 

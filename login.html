@@ -11,136 +11,6 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐱</text></svg>">
     <link rel="stylesheet" href="style.css">
-    <style>
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --premium-gradient: linear-gradient(135deg, #f0f9ff 0%, #e0f2f1 100%);
-        }
-
-        body.login-page {
-            background: var(--premium-gradient);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            font-family: 'Outfit', sans-serif;
-            overflow: hidden;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 420px;
-        }
-
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            padding: 40px;
-            box-shadow: 0 15px 45px rgba(31, 38, 135, 0.1);
-            text-align: center;
-        }
-
-        .login-header h1 {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .login-header p {
-            color: var(--text-muted);
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-dark);
-            font-size: 0.9rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 14px 20px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 16px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: white;
-            box-shadow: 0 5px 15px rgba(242, 143, 59, 0.1);
-        }
-
-        .login-actions {
-            margin-top: 30px;
-        }
-
-        .forgot-password {
-            display: block;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .forgot-password:hover {
-            color: var(--primary);
-        }
-
-        .register-link {
-            margin-top: 25px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .register-link a {
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Floating Nav Toggle */
-        .home-link {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 600;
-        }
-    </style>
 </head>
 
 <body class="login-page">
@@ -150,15 +20,15 @@
         <div class="blob blob-2"></div>
     </div>
 
-    <main class="page-transition" id="main-content" style="width: 100%; display: flex; justify-content: center;">
-        <a href="index.html" class="home-link">
-            <span>←</span> Начало
-        </a>
+    <a href="index.html" class="mobile-back-btn">
+        <span>←</span> Начало
+    </a>
 
+    <main class="page-transition" id="main-content" style="display: flex; justify-content: center; width: 100%;">
         <div class="login-container">
-            <div class="glass-card">
+            <div class="bento-card">
                 <div class="login-header">
-                    <h1>Добре дошли отново! 🐾</h1>
+                    <h1 class="hero-gradient-text">Добре дошли отново! 🐾</h1>
                     <p>Влезте в профила си, за да следите здравето на Вашата котка.</p>
                 </div>
 
@@ -185,8 +55,6 @@
         </div>
     </main>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Supabase SDK & Modules -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
