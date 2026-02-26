@@ -25,6 +25,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const closeSidebarBtn = document.getElementById('close-sidebar');
     const sidebarCatList = document.getElementById('sidebar-cat-list');
 
+    // Chat UI Elements (Moved here to prevent ReferenceError)
+    const symptomCheckerBtn = document.getElementById('symptom-checker-btn');
+    const aiChatOverlay = document.getElementById('ai-chat-overlay');
+    const closeChatBtn = document.getElementById('close-chat');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+
+    let isChatInitialized = false;
+
     document.getElementById('sidebar-owner-email').innerText = userEmail;
 
     const hideLoader = () => {
@@ -34,24 +44,223 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // 2. Sidebar Toggles
+    // 2. Sidebar Toggles (Phase 22 Fix: Toggle Logic)
     const toggleSidebar = (show) => {
-        if (show) {
+        const isActive = show !== undefined ? show : !sidebar.classList.contains('active');
+
+        if (isActive) {
             sidebar.classList.add('active');
             sidebarOverlay.classList.add('active');
+            menuBtn.classList.add('active'); // Синхронизация с иконата
             document.body.style.overflow = 'hidden';
         } else {
             sidebar.classList.remove('active');
             sidebarOverlay.classList.remove('active');
+            menuBtn.classList.remove('active');
             document.body.style.overflow = '';
         }
     };
 
-    menuBtn.addEventListener('click', () => toggleSidebar(true));
+    menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSidebar(); // Използваме toggle логика
+    });
+
     closeSidebarBtn.addEventListener('click', () => toggleSidebar(false));
     sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
 
-    // Display selected cat data function
+    // --- NEW: TAB SWITCHING LOGIC (Phase 22 Fix: AI App Look) ---
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabName = btn.dataset.tab;
+            const tabId = `tab-${tabName}`;
+
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            tabContents.forEach(content => {
+                content.classList.toggle('active', content.id === tabId);
+            });
+
+            // Lock body scroll ONLY for AI Tab on mobile
+            if (window.innerWidth <= 768 && tabName === 'ai') {
+                document.body.classList.add('no-scroll');
+                if (!isChatInitialized) {
+                    appendDisclaimer();
+                    isChatInitialized = true;
+                }
+            } else {
+                document.body.classList.remove('no-scroll');
+            }
+
+            // Optional: Auto-scroll chat to bottom when entering AI tab
+            if (tabName === 'ai') {
+                setTimeout(() => {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 100);
+            }
+        });
+    });
+
+    // --- NEW: MODAL LOGIC (Manual Reminders) ---
+    const reminderModal = document.getElementById('reminder-modal');
+    const addReminderBtn = document.getElementById('add-reminder-btn');
+    const closeModalBtn = document.getElementById('close-modal');
+    const manualForm = document.getElementById('manual-reminder-form');
+
+    if (addReminderBtn) {
+        addReminderBtn.addEventListener('click', () => reminderModal.classList.remove('modal-hidden'));
+    }
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => reminderModal.classList.add('modal-hidden'));
+    }
+    window.addEventListener('click', (e) => {
+        if (e.target === reminderModal) reminderModal.classList.add('modal-hidden');
+    });
+
+    if (manualForm) {
+        manualForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const type = document.getElementById('manual-type').value;
+            const label = document.getElementById('manual-label').value;
+            const dateStr = document.getElementById('manual-date').value;
+
+            if (!dateStr) return;
+            const dateObj = new Date(dateStr);
+
+            saveReminderData({
+                type: type,
+                label: label,
+                date: dateObj.toLocaleDateString('bg-BG'),
+                dateISO: dateObj.toISOString(),
+                id: Date.now()
+            });
+
+            manualForm.reset();
+            reminderModal.classList.add('modal-hidden');
+        });
+    }
+
+    // Helper logic used by both AI and Manual form:
+    function saveReminderData(newObj) {
+        const activeCatId = localStorage.getItem('active_cat_id');
+        if (!activeCatId) {
+            console.warn("No active cat ID found, cannot save reminder.");
+            return;
+        }
+
+        newObj.catId = activeCatId; // Tag with current cat
+        let reminders = JSON.parse(localStorage.getItem('meowguard_reminders') || '[]');
+
+        // Deduplicate: same type AND same catId
+        const existingIndex = reminders.findIndex(r => r.type === newObj.type && r.catId === activeCatId);
+
+        if (existingIndex !== -1) {
+            newObj.id = reminders[existingIndex].id; // Keep same ID for list consistency
+            reminders[existingIndex] = newObj;
+            console.log("Updated existing reminder of type:", newObj.type, "for cat:", activeCatId);
+        } else {
+            reminders.push(newObj);
+            console.log("Added new reminder of type:", newObj.type, "for cat:", activeCatId);
+        }
+
+        localStorage.setItem('meowguard_reminders', JSON.stringify(reminders));
+        renderReminders();
+    }
+    window.saveReminderData = saveReminderData; // Expose to internal logic if needed
+
+    // 8. Render Reminders on dashboard
+    function renderReminders() {
+        const list = document.getElementById('reminders-list');
+        const countEl = document.getElementById('reminders-count');
+        if (!list) return;
+
+        const activeCatId = localStorage.getItem('active_cat_id');
+        let reminders = JSON.parse(localStorage.getItem('meowguard_reminders') || '[]');
+
+        // Filter by active cat
+        reminders = reminders.filter(r => r.catId === activeCatId);
+
+        const typeTranslations = {
+            'vaccination': 'Ваксинация',
+            'neutering': 'Кастрация',
+            'deworming': 'Обезпаразитяване',
+            'checkup': 'Контролен преглед'
+        };
+        const icons = { vaccination: '💉', deworming: '💊', checkup: '🩺', neutering: '✂️' };
+
+        if (reminders.length === 0) {
+            list.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 15px 0;">Няма записани напомняния. Споделете медицинско събитие в чата! 🐾</p>';
+            if (countEl) countEl.textContent = '0';
+            return;
+        }
+
+        reminders.sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
+
+        list.innerHTML = reminders.map(r => `
+            <div class="reminder-item" data-id="${r.id}">
+                <div class="reminder-icon">${icons[r.type] || '📅'}</div>
+                <div class="reminder-info">
+                    <div class="reminder-label">${typeTranslations[r.type] || r.label}</div>
+                    <div class="reminder-date">${r.date}</div>
+                </div>
+                <button class="reminder-delete" onclick="deleteReminder(${r.id})" title="Изтрий">✕</button>
+            </div>
+        `).join('');
+
+        if (countEl) countEl.textContent = reminders.length;
+    }
+    window.renderReminders = renderReminders; // Expose globally
+
+    function renderTip(breed = '') {
+        const tipEl = document.getElementById('daily-tip-text');
+        if (!tipEl) return;
+
+        const tips = {
+            general: [
+                "Осигурете прясна течаща вода на Вашата котка – това помага за предотвратяване на бъбречни проблеми.",
+                "Редовните игри (поне 15 мин на ден) намаляват стреса и поддържат здравословно тегло.",
+                "Котешката трева помага за естественото пречистване на стомаха от косми.",
+                "Спокойната среда е ключът към дълголетието. Избягвайте силни шумове около мястото за сън."
+            ],
+            longHaired: [
+                "Сресвайте козината ежедневно, за да предотвратите болезнени сплъстявания.",
+                "Използвайте специални малцови пасти за предотвратяване на образуването на топчета косми.",
+                "Редовното подстригване на козината около лапите помага за по-добра хигиена.",
+                "Персийските котки изискват ежедневно почистване на зоната около очите."
+            ],
+            hairless: [
+                "Сфинксовете нямат козина, която да абсорбира мазнините – къпете ги веднъж седмично с мек шампоан.",
+                "През зимата осигурете топли дрешки, тъй като безкосместите котки губят топлина бързо.",
+                "Използвайте слънцезащитен крем за котки, ако Вашият Сфинкс обича да стои на прозореца.",
+                "Редовно почиствайте ушите и гънките на кожата от натрупан себум."
+            ],
+            active: [
+                "Активните породи (Бенгал, Сиам) обожават вертикалните пространства – осигурете им високи катерушки.",
+                "Използвайте интелигентни пъзели за храна, за да стимулирате ума и ловните инстинкти.",
+                "Играчките тип 'въдица' са идеални за изразходване на енергията на Бенгалските котки.",
+                "Осигурете достъп до обезопасен прозорец, за да може котката да наблюдава външния свят."
+            ]
+        };
+
+        const b = breed.toLowerCase();
+        let selectedCategory = 'general';
+
+        if (b.includes('сфинкс') || b.includes('sphynx') || b.includes('безкосместа')) {
+            selectedCategory = 'hairless';
+        } else if (b.includes('персийска') || b.includes('persian') || b.includes('мей куун') || b.includes('maine coon')) {
+            selectedCategory = 'longHaired';
+        } else if (b.includes('бенгалска') || b.includes('bengal') || b.includes('сиамска') || b.includes('siamese')) {
+            selectedCategory = 'active';
+        }
+
+        const categoryTips = tips[selectedCategory];
+        const randomTip = categoryTips[Math.floor(Math.random() * categoryTips.length)];
+        tipEl.innerText = randomTip;
+    }
     const activateCatProfile = (cat) => {
         // Save to local storage to persist across reloads
         localStorage.setItem('active_cat_id', cat.id);
@@ -83,7 +292,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         setTimeout(() => {
             if (circle) circle.setAttribute('stroke-dasharray', '100, 100');
         }, 500);
+
+        // Refresh reminders for this specific cat
+        renderReminders();
+
+        // Show personalized tip
+        renderTip(cat.breed);
+
+        // Clear chat history for fresh context
+        if (chatMessages) {
+            chatMessages.innerHTML = '';
+            appendDisclaimer(); // Always show disclaimer in new chat
+        }
+        isChatInitialized = true;
     };
+
+    function appendDisclaimer() {
+        if (!chatMessages) return;
+        // Check if disclaimer already exists to avoid duplicates
+        if (chatMessages.querySelector('.ai-disclaimer')) return;
+
+        const disclaimer = document.createElement('div');
+        disclaimer.className = 'ai-disclaimer';
+        disclaimer.innerHTML = '⚠️ <strong>Важно:</strong> AI асистентът не е ветеринарен лекар. Информацията тук е само с консултативна цел и не замества професионална медицинска помощ.';
+        chatMessages.prepend(disclaimer);
+    }
+    window.appendDisclaimer = appendDisclaimer; // Expose if needed
 
     // 3. Fetch All Cats
     try {
@@ -175,14 +409,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTimeout(hideLoader, 3000);
 
     // 5. Phase 13: AI Symptom Checker Logic
-    const symptomCheckerBtn = document.getElementById('symptom-checker-btn');
-    const aiChatOverlay = document.getElementById('ai-chat-overlay');
-    const closeChatBtn = document.getElementById('close-chat');
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatMessages = document.getElementById('chat-messages');
-
-    let isChatInitialized = false;
+    // Toggle Chat Overlay (Elements now initialized at top)
 
     // Toggle Chat Overlay
     if (symptomCheckerBtn) {
@@ -193,7 +420,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Send initial medical disclaimer if first time opening
             if (!isChatInitialized) {
-                appendMessage('Това е AI асистент, а не ветеринар. При спешност се свържете с лекар.', 'system disclaimer');
+                appendDisclaimer();
                 isChatInitialized = true;
             }
             chatInput.focus();
@@ -236,46 +463,54 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (el) el.remove();
     }
 
-    // 6. Gemini AI Symptom Checker (Model Fallback Chain - Adjusted for User Quotas)
-    const MODEL_CHAIN = ['gemini-3-flash', 'gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemma-3-27b'];
+    // 6. Gemini AI Symptom Checker (Model Fallback Chain - Stability Focus)
+    const MODEL_CHAIN = ['gemini-2.0-flash-exp', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-1.5-flash-8b'];
 
     async function getAIResponse(userMessage) {
         const catName = document.getElementById('cat-name-display').innerText || 'Котка';
         const catBreed = document.getElementById('sidebar-breed').innerText || 'Неизвестна';
         const catAge = document.getElementById('val-age').innerText || 'Неизвестна';
+        const catGender = document.getElementById('val-gender').innerText || 'Неизвестен';
 
         const isFirstMessage = chatMessages.children.length <= 1;
 
-        // System instruction — High-Precision Vet Consultant (Updated)
-        const systemInstruction = `Ти си ветеринарен консултант на MeowGuard. Твоята задача е да помагаш на собственика на котката ${catName} (${catBreed}, ${catAge}).
+        // System instruction — Expert SaaS Consultant (Gender-Aware & Filtered)
+        const systemInstruction = `Ти си ветеринарен консултант на MeowGuard в специалната секция "AI Консултант". Твоята задача е да помагаш на собственика на котката ${catName} (${catBreed}, ${catAge}, пол: ${catGender}).
 
 ПРАВИЛА ЗА ПОВЕДЕНИЕ:
-1. КАТЕГОРИЗАЦИЯ НА ЗАЯВКАТА:
-   - АКО потребителят съобщава за симптом (повръщане, болка): Обясни вероятната причина (напр. диетична грешка) и дай план за действие.
-   - АКО потребителят планира процедура (ваксина, кастрация): НЕ давай медицински съвети. Потвърди, пожелай успех и генерирай JSON тага.
-   - АКО потребителят коригира дата: Потвърди актуализацията и генерирай нов JSON таг със СЪЩИЯ "type".
+1. РОЛЯ: Ти си висококвалифициран експерт. Говориш възпитано и професионално.
+2. ГРАМАТИКА: Използвай правилни местоимения спрямо пола на котката (${catGender}). 
+   - Ако е Мъжки: използвай "той", "него", "му".
+   - Ако е Женски: използвай "тя", "нея", "й".
 
-2. ИЗЧИСЛЯВАНЕ НА ДАТИ (Днес е ${new Date().toLocaleDateString('bg-BG')}):
-   - "след 3 месеца" = 90 дни.
-   - "след месец" = 30 дни.
-   - "следващата седмица" = 7 дни.
-   - Винаги пресмятай финалната дата спрямо днешната и я съобщавай в чата.
+3. МЕДИЦИНСКА ЛОГИКА СЪОБРАЗНО ПОЛА:
+   - АКО Е МЪЖКИ: Бъди изключително бдителен за симптоми, свързани с долните пикочни пътища (FLUTD/кристали).
+   - АКО Е ЖЕНСКИ: Съобразявай съветите с женското хормонално здраве и специфики при кастрация.
 
-3. ФОРМАТ И ОГРАНИЧЕНИЯ:
-   - Максимум 2 абзаца, разделени с ЕДИН <br>.
-   - Използвай <strong> за ключови термини и <em> за действия.
-   - Използвай точно 2 емоджита (едно в началото, едно в края).
-   - ЗАБРАНЕНИ ДУМИ: "носталгия", "въпластват", "хладзагубителна", "празнородни", "дрехтиът".
+4. ИНТЕЛИГЕНТНО ФИЛТРИРАНЕ (ВАЖНО!):
+   - Генерирай <!--REMINDER:...--> таг за Контролен преглед САМО ако:
+     а) Потребителят ИЗРИЧНО поиска напомняне.
+     б) Симптомите са сериозни (кръв, летаргия, системно повръщане, пълна липса на апетит).
+   - ЗА ПОВЕДЕНЧЕСКИ ВЪПРОСИ (хранене, навици, игра): Давай само съвети. НЕ генерирай напомняния в таблото.
+   - ПРЕДИ ДА ГЕНЕРИРАШ JSON, СИ КАЖИ "НА УМ": "Това изисква ли лекар или е просто съвет за ежедневието?". Ако е съвет - не генерирай JSON.
 
-4. АВТОМАТИЧНИ НАПОМНЯНИЯ (JSON):
-Генерирайте скрит таг В КРАЯ на отговора:
-- Ваксинация → <!--REMINDER:{"type":"vaccination","days":365,"label":"Ваксинация: ${catName}"}-->
-- Кастрация (планирана) → <!--REMINDER:{"type":"neutering","days":БРОЙ_ДНИ,"label":"Предстояща кастрация: ${catName}"}-->
-- Кастрация (преглед след) → <!--REMINDER:{"type":"checkup","days":7,"label":"Контролен преглед: ${catName}"}-->
-- Обезпаразитяване → <!--REMINDER:{"type":"deworming","days":30,"label":"Обезпаразитяване: ${catName}"}-->
-Ако потребителят коригира дата, използвайте СЪЩИЯ "type", за да се обнови съществуващото напомняне.
+5. КАТЕГОРИЗАЦИЯ:
+   - Симптоми: Обясни причините и дай план за действие.
+   - Процедури/Дати: Потвърди, пожелай успех и генерирай JSON.
+   - Корекции: Потвърди актуализацията.
 
-ПОТВЪРЖДЕНИЕ: Винаги казвайте в чата: "🐾 Записах/Обнових напомняне за [събитието] на [дата].";
+6. ИЗЧИСЛЯВАНЕ НА ДАТИ (Днес е ${new Date().toLocaleDateString('bg-BG')}):
+   - Винаги пресмятай финалната дата спрямо днешната и я съобщавай.
+
+7. ФОРМАТ:
+   - Макс 2 абзаца, 2 емоджита. Използвай <strong> и <em>.
+   - ЗАБРАНЕНИ: "носталгия", "въпластват", "хладзагубителна", "празнородни".
+
+8. JSON ТАГ (ВИНАГИ В КРАЯ, АКО Е ОДОБРЕН ОТ ФИЛТЪРА):
+   - <!--REMINDER:{"type":"vaccination","days":365,"label":"Ваксинация: ${catName}"}-->
+   - Типове: "vaccination", "neutering", "deworming", "checkup".
+
+ПОТВЪРЖДЕНИЕ: Само ако има генериран JSON, завършвай с: "🐾 Обнових напомнянето в Таблото Ви за [ДАТА].";
 
 Отговаряйте ТОЧНО в този стил. Не се отклонявайте.`;
 
@@ -289,7 +524,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (model.includes('gemma')) {
                 bodyObj = {
                     contents: [{
-                        parts: [{ text: `SYSTEM INSTRUCTION:\n${systemInstruction}\n\nUSER MESSAGE:\n${userMessage}` }]
+                        parts: [{ text: `SYSTEM INSTRUCTION: \n${systemInstruction} \n\nUSER MESSAGE: \n${userMessage} ` }]
                     }]
                 };
             } else {
@@ -310,10 +545,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     body: JSON.stringify(bodyObj)
                 });
 
+                if (response.status === 403) {
+                    console.error('Forbidden (403): This usually means Billing is required for EEA/Bulgaria.');
+                    return '⚠️ <strong>Достъпът е отказан (403).</strong> В България (ЕИЗ) Google изисква активиран <strong>Billing</strong> в AI Studio, дори за безплатни лимити. Моля, проверете настройките си. 🐾';
+                }
+
                 if (response.status === 429 || response.status === 404) {
                     console.warn('Model ' + model + ' returned ' + response.status + '. Trying fallback...');
                     if (i === MODEL_CHAIN.length - 1) {
-                        return 'Всички модели са заети. Моля, изчакайте минута и опитайте отново. 🐾';
+                        return 'Всички модели са заети или недостъпни. Моля, опитайте по-къвсно. 🐾';
                     }
                     continue;
                 }
@@ -326,16 +566,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
 
                 const data = await response.json();
+                if (!data.candidates || !data.candidates[0]) {
+                    console.error('Unexpected API response:', data);
+                    if (i < MODEL_CHAIN.length - 1) continue;
+                    return 'AI не успя да генерира отговор в момента.';
+                }
                 return data.candidates[0].content.parts[0].text;
 
             } catch (error) {
+                console.error('Fetch error for model ' + model + ':', error);
                 if (i === MODEL_CHAIN.length - 1) {
-                    console.error('All models failed:', error);
-                    return 'Възникна грешка при връзката с AI.';
+                    return 'Възникна грешка при връзката с AI. Проверете интернет връзката си.';
                 }
             }
         }
-        return 'Възникна грешка при връзката с AI.';
+        return 'Всички опити за връзка с AI пропаднаха.';
     }
 
     // 7. Reminder Parser — extracts hidden tags, saves to localStorage, returns clean text
@@ -350,30 +595,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const reminderDate = new Date();
                 reminderDate.setDate(reminderDate.getDate() + data.days);
 
-                const reminders = JSON.parse(localStorage.getItem('meowguard_reminders') || '[]');
-
-                // Check for duplicate type
-                const existingIndex = reminders.findIndex(r => r.type === data.type);
-
-                const reminderObj = {
-                    label: data.label,
+                saveReminderData({
                     type: data.type,
+                    label: data.label,
                     date: reminderDate.toLocaleDateString('bg-BG'),
                     dateISO: reminderDate.toISOString(),
-                    id: existingIndex !== -1 ? reminders[existingIndex].id : Date.now()
-                };
-
-                if (existingIndex !== -1) {
-                    // Update existing
-                    reminders[existingIndex] = reminderObj;
-                    console.log(`Updated reminder of type ${data.type}`);
-                } else {
-                    // Add new
-                    reminders.push(reminderObj);
-                    console.log(`Added new reminder of type ${data.type}`);
-                }
-
-                localStorage.setItem('meowguard_reminders', JSON.stringify(reminders));
+                    id: Date.now()
+                });
             } catch (e) {
                 console.warn('Failed to parse reminder:', e);
             }
@@ -382,47 +610,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         cleaned = cleaned.replace(/<!--REMINDER:\{.*?\}-->/g, '');
         renderReminders();
         return cleaned;
-    }
-
-    // 8. Render Reminders on dashboard
-    function renderReminders() {
-        const list = document.getElementById('reminders-list');
-        const countEl = document.getElementById('reminders-count');
-        const emptyEl = document.getElementById('reminders-empty');
-        if (!list) return;
-
-        const reminders = JSON.parse(localStorage.getItem('meowguard_reminders') || '[]');
-
-        // Sort by date ascending
-        reminders.sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
-
-        // Translation mapping and Icon map
-        const typeTranslations = {
-            'vaccination': 'Ваксинация',
-            'neutering': 'Кастрация',
-            'deworming': 'Обезпаразитяване',
-            'checkup': 'Контролен преглед'
-        };
-        const icons = { vaccination: '💉', deworming: '💧', checkup: '🩺', neutering: '✂️' };
-
-        if (reminders.length === 0) {
-            list.innerHTML = '<p class="reminders-empty" style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 15px 0;">Няма записани напомняния. Споделете медицинско събитие в чата! 🐾</p>';
-            if (countEl) countEl.textContent = '0';
-            return;
-        }
-
-        list.innerHTML = reminders.map(r => `
-            <div class="reminder-item" data-id="${r.id}">
-                <div class="reminder-icon">${icons[r.type] || '📅'}</div>
-                <div class="reminder-info">
-                    <div class="reminder-label">${typeTranslations[r.type] || r.label}</div>
-                    <div class="reminder-date">${r.date}</div>
-                </div>
-                <button class="reminder-delete" onclick="deleteReminder(${r.id})" title="Изтрий">✕</button>
-            </div>
-        `).join('');
-
-        if (countEl) countEl.textContent = reminders.length;
     }
 
     // Render on page load
@@ -460,6 +647,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // 6. Remove Indicator and append clean Reply
                 removeTypingIndicator();
                 appendMessage(cleanReply, 'system');
+
+                // 7. Success confirmation in Bulgarian for state update
+                if (aiReply.includes('<!--REMINDER:')) {
+                    console.log("Reminder detected and processed via saveReminderData");
+                }
             } catch (err) {
                 removeTypingIndicator();
                 appendMessage("Възникна грешка при връзката с AI.", 'system');
@@ -486,43 +678,10 @@ async function handleLogout() {
     await signOut();
 }
 
-// Global Delete Reminder function (called by inline onclick in reminder items)
+// Global Delete Reminder function
 function deleteReminder(id) {
     let reminders = JSON.parse(localStorage.getItem('meowguard_reminders') || '[]');
     reminders = reminders.filter(r => r.id !== id);
     localStorage.setItem('meowguard_reminders', JSON.stringify(reminders));
-
-    // Re-render the reminders list
-    const list = document.getElementById('reminders-list');
-    const countEl = document.getElementById('reminders-count');
-    if (!list) return;
-
-    const typeTranslations = {
-        'vaccination': 'Ваксинация',
-        'neutering': 'Кастрация',
-        'deworming': 'Обезпаразитяване',
-        'checkup': 'Контролен преглед'
-    };
-    const icons = { vaccination: '💉', deworming: '💧', checkup: '🩺', neutering: '✂️' };
-
-    if (reminders.length === 0) {
-        list.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 15px 0;">Няма записани напомняния. Споделете медицинско събитие в чата! 🐾</p>';
-        if (countEl) countEl.textContent = '0';
-        return;
-    }
-
-    reminders.sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
-
-    list.innerHTML = reminders.map(r => `
-        <div class="reminder-item" data-id="${r.id}">
-            <div class="reminder-icon">${icons[r.type] || '📅'}</div>
-            <div class="reminder-info">
-                <div class="reminder-label">${typeTranslations[r.type] || r.label}</div>
-                <div class="reminder-date">${r.date}</div>
-            </div>
-            <button class="reminder-delete" onclick="deleteReminder(${r.id})" title="Изтрий">✕</button>
-        </div>
-    `).join('');
-
-    if (countEl) countEl.textContent = reminders.length;
+    if (window.renderReminders) window.renderReminders();
 }

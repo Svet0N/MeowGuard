@@ -402,147 +402,189 @@
     </div>
     <div id="sidebar-overlay" class="sidebar-overlay-hidden"></div>
 
-    <!-- Fixed Navbar -->
-    <header class="navbar"
-        style="background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: fixed; top: 0; width: 100%; z-index: 900;">
-        <div class="container nav-content nav-flex-row"
-            style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 15px;">
+    <!-- Separated Header and Navigation (Phase 22 Fix) -->
+    <header id="main-header">
+        <div class="container header-inner">
+            <div class="logo-group">
                 <button id="dashboard-menu-btn" class="dashboard-hamburger">
                     <span></span><span></span><span></span>
                 </button>
-                <a href="#" class="logo"
-                    style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
-                    <span class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                            fill="currentColor">
+                <a href="#" class="logo">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
                             <path
                                 d="M290.59 192c-20.18 0-106.82 1.98-162.59 85.95V192c0-52.94-43.06-96-96-96-17.67 0-32 14.33-32 32s14.33 32 32 32c17.64 0 32 14.36 32 32v256c0 35.3 28.7 64 64 64h176c8.84 0 16-7.16 16-16v-16c0-17.67-14.33-32-32-32h-32l128-96v144c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V289.86c-10.29 2.67-20.89 4.54-32 4.54-61.81 0-113.52-44.05-125.41-102.4zM448 96h-64l-64-64v134.4c0 53.02 42.98 96 96 96s96-42.98 96-96V32l-64 64zm-72 80c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16zm80 0c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16z" />
-                        </svg></span>
-                    <span style="font-weight: 700;">MeowGuard</span>
+                        </svg>
+                    </span>
+                    <span class="logo-text">MeowGuard</span>
                 </a>
             </div>
-            <!-- Logout moved to sidebar -->
         </div>
     </header>
 
+    <nav id="tab-navigation">
+        <div class="container nav-tabs">
+            <button class="tab-btn active" data-tab="dashboard"><i>🏠</i> <span>Табло</span></button>
+            <button class="tab-btn" data-tab="ai"><i>💬</i> <span>AI Консултант</span></button>
+            <button class="tab-btn" data-tab="records"><i>📋</i> <span>Здравен картон</span></button>
+        </div>
+    </nav>
+
     <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h1 id="user-greeting">Здравей!</h1>
-            <p id="cat-greeting">Добре дошли в MeowGuard.</p>
-        </div>
+        <!-- Dashboard Tab -->
+        <section id="tab-dashboard" class="tab-content active">
+            <div class="dashboard-header">
+                <h1 id="user-greeting">Здравей!</h1>
+                <p id="cat-greeting">Добре дошли в MeowGuard.</p>
+            </div>
 
-        <div class="main-grid">
-            <!-- Stats -->
-            <div class="glass-card health-card">
-                <div class="health-score-container">
-                    <svg viewBox="0 0 36 36" class="circular-chart">
-                        <path class="circle-bg"
-                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                        <path class="circle" id="health-score-stroke" stroke-dasharray="0, 100"
-                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    </svg>
-                    <div class="health-score-text">
-                        <span class="number">100</span>
-                        <span class="label">Health</span>
+            <div class="main-grid">
+                <!-- Stats -->
+                <div class="glass-card health-card">
+                    <div class="health-score-container">
+                        <svg viewBox="0 0 36 36" class="circular-chart">
+                            <path class="circle-bg"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="circle" id="health-score-stroke" stroke-dasharray="0, 100"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="health-score-text">
+                            <span class="number">100</span>
+                            <span class="label">Health</span>
+                        </div>
+                    </div>
+                    <div class="health-info">
+                        <div class="status-badge"><span>✨</span> Всичко изглежда наред</div>
+                        <h2 id="cat-name-display">Зареждане...</h2>
+                        <p class="lang-bg">Няма открити симптоми. Вашият любимец изглежда здрав и активен.</p>
+                        <div class="cat-stats">
+                            <div class="stat-box">
+                                <span class="stat-label">Възраст</span>
+                                <span class="stat-value"><span id="val-age">-</span> г.</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Тегло</span>
+                                <span class="stat-value"><span id="val-weight">-</span> кг</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="health-info">
-                    <div class="status-badge"><span>✨</span> Всичко изглежда наред</div>
-                    <h2 id="cat-name-display">Зареждане...</h2>
-                    <p class="lang-bg">Няма открити симптоми. Вашият любимец изглежда здрав и активен.</p>
-                    <div class="cat-stats">
-                        <div class="stat-box">
-                            <span class="stat-label">Възраст</span>
-                            <span class="stat-value"><span id="val-age">-</span> г.</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">Тегло</span>
-                            <span class="stat-value"><span id="val-weight">-</span> кг</span>
-                        </div>
+
+                <!-- Profile Sidebar -->
+                <div class="glass-card profile-small-card">
+                    <img src="" alt="" class="premium-avatar" id="main-cat-avatar">
+                    <h3 id="sidebar-name">-</h3>
+                    <p id="sidebar-breed" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">-</p>
+                    <div
+                        style="margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        <span class="stat-label">Пол:</span>
+                        <span class="stat-value" id="val-gender" style="font-size: 0.9rem;">-</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Profile Sidebar -->
-            <div class="glass-card profile-small-card">
-                <img src="" alt="" class="premium-avatar" id="main-cat-avatar">
-                <h3 id="sidebar-name">-</h3>
-                <p id="sidebar-breed" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">-</p>
+            <!-- Weight Graph Placeholder -->
+            <div class="glass-card weight-chart-container" style="margin-top: 25px; padding: 30px; text-align: center;">
+                <h3
+                    style="margin-top: 0; font-size: 1.15rem; color: var(--text-dark); text-align: left; margin-bottom: 20px;">
+                    📈 Проследяване на теглото</h3>
                 <div
-                    style="margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-                    <span class="stat-label">Пол:</span>
-                    <span class="stat-value" id="val-gender" style="font-size: 0.9rem;">-</span>
+                    style="height: 150px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.02); border-radius: 20px; border: 1px dashed rgba(0,0,0,0.1); color: var(--text-muted);">
+                    Графиката ще се появи автоматично след добавяне на записи за тегло. 🐾
                 </div>
             </div>
-        </div>
 
-        <!-- Action Row -->
-        <div class="action-container">
-            <a href="#" class="glass-card action-item" id="symptom-checker-btn">
-                <div class="icon-circle">🩺</div>
-                <h3>Провери симптом</h3>
-                <p>AI анализ при съмнение за здравословен проблем.</p>
-            </a>
-            <a href="#" class="glass-card action-item">
-                <div class="icon-circle">📅</div>
-                <h3>Ваксини и прегледи</h3>
-                <p>Планирайте и следете важните дати при ветеринар.</p>
-            </a>
-            <a href="#" class="glass-card action-item">
-                <div class="icon-circle">🏥</div>
-                <h3>Клиники наблизо</h3>
-                <p>Намерете денонощна помощ и ветеринарни центрове.</p>
-            </a>
-        </div>
+            <!-- Reminders Section -->
+            <div class="glass-card reminders-card" id="reminders-section" style="margin-top: 25px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-dark);">📅 Предстоящи напомняния
+                        </h3>
+                        <button id="add-reminder-btn"
+                            style="background: var(--primary); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; transition: transform 0.2s;">+</button>
+                    </div>
+                    <span class="reminders-count" id="reminders-count"
+                        style="background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">0</span>
+                </div>
+                <div id="reminders-list" class="reminders-list">
+                    <p class="reminders-empty" id="reminders-empty"
+                        style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 15px 0;">Няма
+                        записани напомняния. Споделете медицинско събитие в чата! 🐾</p>
+                </div>
+            </div>
 
-        <!-- Reminders Section -->
-        <div class="glass-card reminders-card" id="reminders-section" style="margin-top: 25px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
-                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-dark);">📅 Предстоящи напомняния</h3>
-                <span class="reminders-count" id="reminders-count"
-                    style="background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">0</span>
+            <!-- Daily Tip -->
+            <div class="glass-card daily-tip">
+                <div style="font-size: 1.8rem;">💡</div>
+                <div>
+                    <strong>Съвет на деня:</strong>
+                    <p id="daily-tip-text">Осигурете прясна течаща вода на Вашата котка – това помага за предотвратяване
+                        на бъбречни проблеми.</p>
+                </div>
             </div>
-            <div id="reminders-list" class="reminders-list">
-                <p class="reminders-empty" id="reminders-empty"
-                    style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 15px 0;">Няма
-                    записани напомняния. Споделете медицинско събитие в чата! 🐾</p>
-            </div>
-        </div>
+        </section>
 
-        <!-- Daily Tip -->
-        <div class="glass-card daily-tip">
-            <div style="font-size: 1.8rem;">💡</div>
-            <div>
-                <strong>Съвет на деня:</strong>
-                <p>Осигурете прясна течаща вода на Вашата котка – това помага за предотвратяване на бъбречни проблеми.
-                </p>
+        <!-- AI Consultant Tab -->
+        <section id="tab-ai" class="tab-content">
+            <div class="ai-tab-header">
+                <h2>💬 AI Консултант</h2>
+                <p>Попитайте MeowGuard AI за поведението, храненето или здравето на Вашата котка.</p>
             </div>
-        </div>
+            <div class="full-chat-container glass-card">
+                <div id="chat-messages" class="chat-messages">
+                    <!-- Messages populated by JS -->
+                </div>
+                <form id="chat-form" class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Опишете симптома тук..." autocomplete="off">
+                    <button type="submit" id="send-btn" class="send-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Health Records Tab -->
+        <section id="tab-records" class="tab-content">
+            <div class="records-header">
+                <h2>📋 Здравен картон</h2>
+                <p>Тук ще се появи пълната история на прегледи, тегло и изследвания.</p>
+            </div>
+            <div class="glass-card records-placeholder">
+                <div style="font-size: 3rem; margin-bottom: 20px;">🚧</div>
+                <h3>Секцията е в разработка</h3>
+                <p>Очаквайте скоро възможност за прикачване на файлове и проследяване на теглото.</p>
+            </div>
+        </section>
     </div>
 
-    <!-- AI Chat Overlay -->
-    <div id="ai-chat-overlay" class="ai-chat-overlay-hidden">
-        <div class="chat-container">
-            <div class="chat-header">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="ai-avatar">💡</div>
-                    <div>
-                        <h3 style="margin: 0; font-size: 1.1rem; color: var(--primary);">MeowGuard AI</h3>
-                        <span style="font-size: 0.8rem; color: var(--text-muted);">Винаги тук за Вашата котка</span>
-                    </div>
+    <!-- Manual Reminder Modal -->
+    <div id="reminder-modal" class="modal-hidden">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3>➕ Ново напомняне</h3>
+                <button id="close-modal" class="close-modal-btn">&times;</button>
+            </div>
+            <form id="manual-reminder-form">
+                <div class="form-group">
+                    <label>Тип събитие</label>
+                    <select id="manual-type" required>
+                        <option value="vaccination">💉 Ваксинация</option>
+                        <option value="neutering">✂️ Кастрация</option>
+                        <option value="deworming">💊 Обезпаразитяване</option>
+                        <option value="checkup">🩺 Контролен преглед</option>
+                    </select>
                 </div>
-                <button id="close-chat" class="close-chat-btn">&times;</button>
-            </div>
-            <div id="chat-messages" class="chat-messages">
-                <!-- Messages populated by JS -->
-            </div>
-            <form id="chat-form" class="chat-input-area">
-                <input type="text" id="chat-input" placeholder="Опишете симптома тук..." autocomplete="off">
-                <button type="submit" id="send-btn" class="send-btn">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                    </svg>
-                </button>
+                <div class="form-group">
+                    <label>Етикет (напр. Ваксинация 2)</label>
+                    <input type="text" id="manual-label" placeholder="Въведете име..." required>
+                </div>
+                <div class="form-group">
+                    <label>Дата</label>
+                    <input type="date" id="manual-date" required>
+                </div>
+                <button type="submit" class="premium-btn">Запази напомнянето</button>
             </form>
         </div>
     </div>
