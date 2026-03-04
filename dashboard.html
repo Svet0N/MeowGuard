@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="bg">
 
 <head>
@@ -8,536 +8,202 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐱</text></svg>">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐱%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="style.css">
-    <style>
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --premium-gradient: linear-gradient(135deg, #e0f2f1 0%, #f0f9ff 100%);
-        }
-
-        body.dashboard-premium {
-            background: var(--premium-gradient);
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: var(--text-dark);
-            padding-top: 100px;
-            padding-bottom: 50px;
-            overflow-x: hidden;
-        }
-
-        .dashboard-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Glassmorphism Card Base */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(31, 38, 135, 0.08);
-            height: 100%;
-            transition: transform 0.3s ease;
-        }
-
-        /* Header / Greeting */
-        .dashboard-header {
-            margin-bottom: 35px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
-        .dashboard-header h1 {
-            font-size: 2.3rem;
-            margin-bottom: 8px;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .dashboard-header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        /* Grid Layout */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1.6fr 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-
-        /* Health Card */
-        .health-card {
-            display: flex;
-            align-items: center;
-            gap: 35px;
-            position: relative;
-        }
-
-        .health-score-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            flex-shrink: 0;
-        }
-
-        .circular-chart {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        .circle-bg {
-            fill: none;
-            stroke: #f1f1f1;
-            stroke-width: 3.5;
-        }
-
-        .circle {
-            fill: none;
-            stroke-width: 3.5;
-            stroke-linecap: round;
-            stroke: var(--secondary);
-            transition: stroke-dasharray 1.2s ease-in-out;
-        }
-
-        .health-score-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            width: 100%;
-        }
-
-        .health-score-text .number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: block;
-            color: var(--secondary);
-            line-height: 1;
-        }
-
-        .health-score-text .label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .health-info {
-            flex: 1;
-            text-align: left;
-        }
-
-        .health-info h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: var(--text-dark);
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(165, 214, 167, 0.2);
-            color: #2e7d32;
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        /* Action Grid */
-        .action-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .action-item {
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .action-item:hover {
-            transform: translateY(-10px);
-            background: #ffffff;
-        }
-
-        .icon-circle {
-            width: 58px;
-            height: 58px;
-            background: var(--primary-light);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-        }
-
-        .action-item h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .action-item p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        /* Profile Small Card */
-        .profile-small-card {
-            text-align: center;
-        }
-
-        .premium-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 5px solid white;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 15px;
-        }
-
-        /* Stat Boxes */
-        .cat-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .stat-box {
-            background: rgba(255, 255, 255, 0.45);
-            padding: 12px;
-            border-radius: 18px;
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .stat-value {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--text-dark);
-        }
-
-        /* Logout */
-        .logout-btn-premium {
-            background: rgba(239, 83, 80, 0.08);
-            color: #ef5350;
-            border: 1px solid rgba(239, 83, 80, 0.2);
-            padding: 10px 20px;
-            border-radius: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .logout-btn-premium:hover {
-            background: #ef5350;
-            color: white;
-        }
-
-        /* Daily Tip */
-        .daily-tip {
-            margin-top: 35px;
-            background: rgba(255, 236, 179, 0.2);
-            border: 1px dashed #ffa000;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        /* Loading Overlay */
-        #loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--premium-gradient);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.5s ease-out;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 25px;
-        }
-
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Animation */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive Fixes */
-        @media (max-width: 900px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .health-card {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .action-container {
-                grid-template-columns: 1fr;
-            }
-
-            .dashboard-header {
-                text-align: center;
-            }
-
-            .dashboard-header h1 {
-                font-size: 1.9rem;
-            }
-
-            .dashboard-page {
-                padding-top: 130px;
-            }
-
-            .health-info {
-                text-align: center;
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .dashboard-container {
-                padding: 0 15px;
-            }
-
-            .glass-card {
-                padding: 25px;
-            }
-
-            .health-score-container {
-                width: 130px;
-                height: 130px;
-            }
-        }
-    </style>
-</head>
 
 <body class="dashboard-premium">
     <!-- Loading Overlay -->
-    <div id="loading-overlay">
-        <div class="spinner"></div>
-        <p>🐾 Meow... Checking vitals...</p>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loader-content">
+            <div class="loader-cat">🐱</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+            <p>Зареждане на твоето царство...</p>
+        </div>
     </div>
 
-    <!-- Profile Picker Overlay (Netflix Style) -->
-    <div id="profile-picker" class="profile-picker-hidden">
+    <!-- Profile Picker Overlay -->
+    <div id="profile-picker" class="profile-picker-overlay modal-hidden">
         <div class="picker-container">
             <h2>Кой е наред?</h2>
-            <div class="profiles-grid" id="picker-profiles">
-                <!-- Profiles populated by JS -->
+            <div class="profiles-grid" id="picker-grid">
+                <!-- Populated by JS -->
             </div>
         </div>
     </div>
+    <!-- Screen 1: Home (Command Center) -->
+    <header id="main-header" class="premium-header">
+        <div class="header-container"
+            style="width: 100%; max-width: 600px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+            <div class="streak-badge" id="daily-streak">
+                <span class="streak-icon">🔥</span>
+                <span class="streak-count">0</span>
+            </div>
 
-    <!-- Slide-out Sidebar -->
-    <div id="dashboard-sidebar" class="sidebar-hidden">
-        <div class="sidebar-header">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="owner-avatar">👤</div>
-                <span id="sidebar-owner-email"
-                    style="font-weight: 600; font-size: 0.9rem; word-break: break-all;">-</span>
-            </div>
-            <button id="close-sidebar" class="close-sidebar-btn">&times;</button>
-        </div>
-        <div class="sidebar-content">
-            <h4 class="sidebar-section-title">Моите котки</h4>
-            <div id="sidebar-cat-list" class="sidebar-cat-list">
-                <!-- Cats populated by JS -->
-            </div>
-            <button id="add-new-cat-btn" class="sidebar-add-btn" onclick="window.location.href='onboarding.html'">➕
-                Добави нова котка</button>
-        </div>
-        <div class="sidebar-footer">
-            <button class="sidebar-logout-btn" onclick="handleLogout()">🚪 Изход</button>
-        </div>
-    </div>
-    <div id="sidebar-overlay" class="sidebar-overlay-hidden"></div>
+            <a href="#" class="logo-premium-restored" onclick="switchTab('home'); return false;"
+                style="position: absolute; left: 50%; transform: translateX(-50%);">
+                <span class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+                        <path
+                            d="M290.59 192c-20.18 0-106.82 1.98-162.59 85.95V192c0-52.94-43.06-96-96-96-17.67 0-32 14.33-32 32s14.33 32 32 32c17.64 0 32 14.36 32 32v256c0 35.3 28.7 64 64 64h176c8.84 0 16-7.16 16-16v-16c0-17.67-14.33-32-32-32h-32l128-96v144c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V289.86c-10.29 2.67-20.89 4.54-32 4.54-61.81 0-113.52-44.05-125.41-102.4zM448 96h-64l-64-64v134.4c0 53.02 42.98 96 96 96s96-42.98 96-96V32l-64 64zm-72 80c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16zm80 0c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16z" />
+                    </svg>
+                </span>
+                <span class="logo-text">MeowGuard</span>
+            </a>
 
-    <!-- Separated Header and Navigation (Phase 22 Fix) -->
-    <header id="main-header">
-        <div class="container header-inner">
-            <div class="logo-group">
-                <button id="dashboard-menu-btn" class="dashboard-hamburger">
-                    <span></span><span></span><span></span>
-                </button>
-                <a href="#" class="logo">
-                    <span class="logo-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-                            <path
-                                d="M290.59 192c-20.18 0-106.82 1.98-162.59 85.95V192c0-52.94-43.06-96-96-96-17.67 0-32 14.33-32 32s14.33 32 32 32c17.64 0 32 14.36 32 32v256c0 35.3 28.7 64 64 64h176c8.84 0 16-7.16 16-16v-16c0-17.67-14.33-32-32-32h-32l128-96v144c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V289.86c-10.29 2.67-20.89 4.54-32 4.54-61.81 0-113.52-44.05-125.41-102.4zM448 96h-64l-64-64v134.4c0 53.02 42.98 96 96 96s96-42.98 96-96V32l-64 64zm-72 80c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16zm80 0c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16z" />
-                        </svg>
-                    </span>
-                    <span class="logo-text">MeowGuard</span>
-                </a>
-            </div>
         </div>
     </header>
 
-    <nav id="tab-navigation">
-        <div class="container nav-tabs">
-            <button class="tab-btn active" data-tab="dashboard"><i>🏠</i> <span>Табло</span></button>
-            <button class="tab-btn" data-tab="ai"><i>💬</i> <span>AI Консултант</span></button>
-            <button class="tab-btn" data-tab="records"><i>📋</i> <span>Здравен картон</span></button>
-        </div>
-    </nav>
-
     <div class="dashboard-container">
-        <!-- Dashboard Tab -->
-        <section id="tab-dashboard" class="tab-content active">
-            <div class="dashboard-header">
-                <h1 id="user-greeting">Здравей!</h1>
-                <p id="cat-greeting">Добре дошли в MeowGuard.</p>
+        <!-- TAB 1: HOME (COMMAND CENTER) -->
+        <section id="tab-home" class="tab-content active">
+            <!-- Active Cat Header -->
+            <div class="active-cat-hero">
+                <h1 id="active-cat-name-hero">Куки</h1>
+                <p>Ето как преминава денят</p>
             </div>
 
-            <div class="main-grid">
-                <!-- Stats -->
-                <div class="glass-card health-card">
-                    <div class="health-score-container">
-                        <svg viewBox="0 0 36 36" class="circular-chart">
-                            <path class="circle-bg"
-                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            <path class="circle" id="health-score-stroke" stroke-dasharray="0, 100"
-                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                        </svg>
-                        <div class="health-score-text">
-                            <span class="number">100</span>
-                            <span class="label">Health</span>
-                        </div>
+            <!-- Daily Progress -->
+            <div class="section-container">
+                <div class="daily-progress-wrapper glass-card">
+                    <div class="progress-info">
+                        <span>Дневна грижа</span>
+                        <span id="progress-percent">0%</span>
                     </div>
-                    <div class="health-info">
-                        <div class="status-badge"><span>✨</span> Всичко изглежда наред</div>
-                        <h2 id="cat-name-display">Зареждане...</h2>
-                        <p class="lang-bg">Няма открити симптоми. Вашият любимец изглежда здрав и активен.</p>
-                        <div class="cat-stats">
-                            <div class="stat-box">
-                                <span class="stat-label">Възраст</span>
-                                <span class="stat-value"><span id="val-age">-</span> г.</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-label">Тегло</span>
-                                <span class="stat-value"><span id="val-weight">-</span> кг</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Profile Sidebar -->
-                <div class="glass-card profile-small-card">
-                    <img src="" alt="" class="premium-avatar" id="main-cat-avatar">
-                    <h3 id="sidebar-name">-</h3>
-                    <p id="sidebar-breed" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">-</p>
-                    <div
-                        style="margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-                        <span class="stat-label">Пол:</span>
-                        <span class="stat-value" id="val-gender" style="font-size: 0.9rem;">-</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="daily-progress-fill" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Weight Graph Placeholder -->
-            <div class="glass-card weight-chart-container" style="margin-top: 25px; padding: 30px; text-align: center;">
-                <h3
-                    style="margin-top: 0; font-size: 1.15rem; color: var(--text-dark); text-align: left; margin-bottom: 20px;">
-                    📈 Проследяване на теглото</h3>
-                <div
-                    style="height: 150px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.02); border-radius: 20px; border: 1px dashed rgba(0,0,0,0.1); color: var(--text-muted);">
-                    Графиката ще се появи автоматично след добавяне на записи за тегло. 🐾
+            <!-- Action Buttons Section -->
+            <div class="section-container">
+                <div class="action-buttons-grid">
+                    <button class="action-btn food" onclick="logAction('food')">
+                        <div class="action-icon">🍖</div>
+                        <span>Нахранена</span>
+                    </button>
+                    <button class="action-btn play" onclick="logAction('play')">
+                        <div class="action-icon">🧶</div>
+                        <span>Игра</span>
+                    </button>
+                    <button class="action-btn health" onclick="logAction('health')">
+                        <div class="action-icon">✨</div>
+                        <span>Здраве</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Reminders Section -->
-            <div class="glass-card reminders-card" id="reminders-section" style="margin-top: 25px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-dark);">📅 Предстоящи напомняния
-                        </h3>
-                        <button id="add-reminder-btn"
-                            style="background: var(--primary); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; transition: transform 0.2s;">+</button>
+            <!-- AI Vet Search / CTA -->
+            <div class="section-container">
+                <div class="ai-vet-cta" onclick="switchTab('ai')">
+                    <div class="ai-cta-content">
+                        <h3>Питай ветеринарния AI 🩺</h3>
+                        <p>Имаш въпрос за здравето или храненето?</p>
                     </div>
-                    <span class="reminders-count" id="reminders-count"
-                        style="background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">0</span>
-                </div>
-                <div id="reminders-list" class="reminders-list">
-                    <p class="reminders-empty" id="reminders-empty"
-                        style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 15px 0;">Няма
-                        записани напомняния. Споделете медицинско събитие в чата! 🐾</p>
+                    <div class="ai-cta-icon">→</div>
                 </div>
             </div>
 
-            <!-- Daily Tip -->
-            <div class="glass-card daily-tip">
-                <div style="font-size: 1.8rem;">💡</div>
-                <div>
-                    <strong>Съвет на деня:</strong>
-                    <p id="daily-tip-text">Осигурете прясна течаща вода на Вашата котка – това помага за предотвратяване
-                        на бъбречни проблеми.</p>
+            <!-- Upcoming Reminders -->
+            <div class="section-container">
+                <div class="section-header-flex">
+                    <h3 class="section-label">📅 Предстоящи напомняния</h3>
+                    <button class="add-btn-round" onclick="toggleReminderModal(true)">+</button>
+                </div>
+                <div class="glass-card timeline-card mini-timeline">
+                    <ul class="medical-timeline" id="home-reminders-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pet Carousel (Keep it for switching cats) -->
+            <div class="section-container">
+                <h3 class="section-label">Твоите любимци</h3>
+                <div class="pet-carousel" id="pet-carousel">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Daily Tip (Moved to Bottom) -->
+            <div class="section-container" style="margin-bottom: 25px;">
+                <div class="daily-tip-premium glass-card">
+                    <div class="tip-icon">💡</div>
+                    <div class="tip-content">
+                        <strong>Съвет на деня</strong>
+                        <p>Редовните игри (поне 15 мин на ден) намаляват стреса и поддържат здравословно тегло.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- AI Consultant Tab -->
-        <section id="tab-ai" class="tab-content">
-            <div class="ai-tab-header">
-                <h2>💬 AI Консултант</h2>
-                <p>Попитайте MeowGuard AI за поведението, храненето или здравето на Вашата котка.</p>
-            </div>
-            <div class="full-chat-container glass-card">
-                <div id="chat-messages" class="chat-messages">
-                    <!-- Messages populated by JS -->
+        <!-- TAB 2: HEALTH (CAT PROFILE) -->
+        <section id="tab-health" class="tab-content">
+            <div class="pet-hero-section">
+                <div class="pet-hero-image-wrapper">
+                    <img id="main-cat-avatar" src="" alt="Cat">
                 </div>
-                <form id="chat-form" class="chat-input-area">
-                    <input type="text" id="chat-input" placeholder="Опишете симптома тук..." autocomplete="off">
-                    <button type="submit" id="send-btn" class="send-btn">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
+                <h2 id="cat-name-display" class="pet-hero-name">Име</h2>
+                <div class="pet-quick-stats">
+                    <div class="quick-stat">
+                        <span class="stat-val" id="val-age">-</span>
+                        <span class="stat-lbl">Възраст</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="quick-stat">
+                        <span class="stat-val" id="val-weight">-</span>
+                        <span class="stat-lbl">Тегло</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="quick-stat">
+                        <span class="stat-val">3 м.</span>
+                        <span class="stat-lbl">Преглед</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <h3 class="section-label">Растеж (кг)</h3>
+                <div class="glass-card chart-card">
+                    <div class="chart-wrapper">
+                        <canvas id="weightChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <h3 class="section-label">Медицинска история</h3>
+                <div class="glass-card timeline-card">
+                    <ul class="medical-timeline" id="medical-timeline">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: AI CHAT (INDEPENDENT VIEWPORT) -->
+        <section id="tab-ai" class="tab-content chat-viewport">
+            <div class="chat-header-minimal">
+                <h2>💬 MeowGuard AI</h2>
+                <p>Твоят ветеринарен асистент</p>
+            </div>
+
+            <div class="chat-messages-container" id="chat-messages">
+                <div class="ai-disclaimer-bubble">
+                    ⚠️ <strong>Важно:</strong> AI асистентът не е ветеринар. Консултирайте се с лекар при сериозни
+                    симптоми.
+                </div>
+                <!-- Messages populated by JS -->
+            </div>
+
+            <div class="chat-input-sticky">
+                <form id="chat-form" class="chat-bubble-input">
+                    <input type="text" id="chat-input" placeholder="Питай за Куки..." autocomplete="off">
+                    <button type="submit" id="send-btn">
+                        <svg viewBox="0 0 24 24">
                             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                         </svg>
                     </button>
@@ -545,54 +211,117 @@
             </div>
         </section>
 
-        <!-- Health Records Tab -->
-        <section id="tab-records" class="tab-content">
-            <div class="records-header">
-                <h2>📋 Здравен картон</h2>
-                <p>Тук ще се появи пълната история на прегледи, тегло и изследвания.</p>
-            </div>
-            <div class="glass-card records-placeholder">
-                <div style="font-size: 3rem; margin-bottom: 20px;">🚧</div>
-                <h3>Секцията е в разработка</h3>
-                <p>Очаквайте скоро възможност за прикачване на файлове и проследяване на теглото.</p>
+        <!-- TAB 4: PROFILE (SETTINGS) -->
+        <section id="tab-profile" class="tab-content">
+            <div class="profile-settings-container">
+                <div class="user-profile-hero">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Svetozar" alt="User">
+                    <h3 id="sidebar-owner-email">-</h3>
+                </div>
+                <div class="settings-list">
+                    <button class="settings-item glass-card" onclick="window.location.href='onboarding.html'">
+                        <span>🐱 Добави котка</span>
+                        <i>→</i>
+                    </button>
+                    <button class="settings-item glass-card">
+                        <span>⚙️ Настройки на акаунта</span>
+                        <i>→</i>
+                    </button>
+                    <button class="settings-item glass-card logout-item" onclick="handleLogout()">
+                        <span>🚪 Изход</span>
+                    </button>
+                </div>
             </div>
         </section>
     </div>
 
-    <!-- Manual Reminder Modal -->
+    <!-- Fixed Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('home')" data-tab="home">
+            <div class="nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+            <span>Начало</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('health')" data-tab="health">
+            <div class="nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+            </div>
+            <span>Здраве</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('ai')" data-tab="ai">
+            <div class="nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                    </path>
+                </svg>
+            </div>
+            <span>AI Чат</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('profile')" data-tab="profile">
+            <div class="nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <span>Профил</span>
+        </button>
+    </nav>
+
+    <!-- Modal for adding reminders (Global) -->
     <div id="reminder-modal" class="modal-hidden">
         <div class="modal-content glass-card">
-            <div class="modal-header">
-                <h3>➕ Ново напомняне</h3>
-                <button id="close-modal" class="close-modal-btn">&times;</button>
-            </div>
+            <h3>➕ Напомняне</h3>
             <form id="manual-reminder-form">
-                <div class="form-group">
-                    <label>Тип събитие</label>
-                    <select id="manual-type" required>
-                        <option value="vaccination">💉 Ваксинация</option>
-                        <option value="neutering">✂️ Кастрация</option>
-                        <option value="deworming">💊 Обезпаразитяване</option>
-                        <option value="checkup">🩺 Контролен преглед</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Етикет (напр. Ваксинация 2)</label>
-                    <input type="text" id="manual-label" placeholder="Въведете име..." required>
-                </div>
-                <div class="form-group">
-                    <label>Дата</label>
-                    <input type="date" id="manual-date" required>
-                </div>
-                <button type="submit" class="premium-btn">Запази напомнянето</button>
+                <select id="manual-type" required>
+                    <option value="vaccination">Ваксинация</option>
+                    <option value="deworming">Обезпаразитяване</option>
+                </select>
+                <input type="date" id="manual-date" required>
+                <button type="submit" class="premium-btn">Запази</button>
             </form>
+            <button class="close-btn" onclick="toggleReminderModal(false)">Затвори</button>
+        </div>
+    </div>
+
+    <!-- Paywall Modal -->
+    <div id="paywall-modal" class="modal-hidden">
+        <div class="modal-content glass-card paywall-card">
+            <div class="paywall-header">
+                <span class="premium-badge">PRO</span>
+                <h2>MeowGuard Pro ✨</h2>
+            </div>
+            <p>Достигнахте лимита на безплатните въпроси. Абонирайте се за денонощна здравна грижа и неограничен достъп
+                до AI ветеринар.</p>
+            <ul class="paywall-features">
+                <li>✅ Неограничени въпроси</li>
+                <li>✅ 24/7 Здравен мониторинг</li>
+                <li>✅ Персонални хранителни планове</li>
+            </ul>
+            <button class="btn btn-primary btn-full"
+                onclick="alert('Благодарим за интереса! Тази функция ще бъде активна скоро.')">Абонирай се за 9.99
+                лв./мес.</button>
+            <button class="close-link"
+                onclick="document.getElementById('paywall-modal').classList.add('modal-hidden')">Може би
+                по-късно</button>
         </div>
     </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="auth.js"></script>
-    <script src="ui.js"></script>
     <script src="dashboard.js"></script>
 </body>
 
